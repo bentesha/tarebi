@@ -1,0 +1,7 @@
+models:
+  Models\Admission:
+    title: string:255
+    description: text
+    period: string:255
+    created_by: id foreign:users
+    status: enum:open,closed
