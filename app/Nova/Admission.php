@@ -3,25 +3,28 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Gravatar;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Password;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Trix;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
-class User extends Resource {
+class Admission extends Resource {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\User::class;
+    public static $model = \App\Models\Admission::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'title';
 
     /**
      * The columns that should be searched.
@@ -29,7 +32,15 @@ class User extends Resource {
      * @var array
      */
     public static $search = [
-        'id', 'name', 'email',
+        'id',
+        'title',
+        'description',
+        'period',
+        'batch',
+        'opening_date',
+        'closing_date',
+        'created_by',
+        'status'
     ];
 
     /**
@@ -40,26 +51,48 @@ class User extends Resource {
      */
     public function fields(Request $request) {
         return [
-            ID::make()->sortable()
+            ID::make('id')
+                ->sortable()
                 ->hideFromIndex()
                 ->hideFromDetail(),
 
-            Gravatar::make()->maxWidth(50),
-
-            Text::make('Name')
+            Text::make('Title')
                 ->sortable()
-                ->rules('required', 'max:255'),
+                ->rules(['required', 'max:255']),
 
-            Text::make('Email')
+            Trix::make('Description')
                 ->sortable()
-                ->rules('required', 'email', 'max:254')
-                ->creationRules('unique:users,email')
-                ->updateRules('unique:users,email,{{resourceId}}'),
+                ->rules(['required']),
 
-            Password::make('Password')
-                ->onlyOnForms()
-                ->creationRules('required', 'string', 'min:6')
-                ->updateRules('nullable', 'string', 'min:6'),
+            Text::make('Period')
+                ->sortable(),
+
+            Text::make('Batch')
+                ->sortable()
+                ->rules(['required', 'max:255'])
+                ->creationRules('unique:admissions,batch')
+                ->updateRules('unique:admissions,batch,{{resourceId}}'),
+
+            Date::make('Opening Date')
+                ->sortable()
+                ->rules(['required']),
+
+            Date::make('Closing Date')
+                ->sortable()
+                ->rules(['required']),
+
+            BelongsTo::make('Created By', 'user', User::class)
+                ->sortable()
+                ->searchable()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
+
+            Select::make('Status')
+                ->options([
+                    'open' => 'Open',
+                    'closed' => 'Closed'
+                ])
+                ->rules('required')
         ];
     }
 
