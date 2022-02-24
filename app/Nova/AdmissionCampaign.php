@@ -6,18 +6,19 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Admission extends Resource {
+class AdmissionCampaign extends Resource {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Admission::class;
+    public static $model = \App\Models\AdmissionCampaign::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -35,11 +36,10 @@ class Admission extends Resource {
         'id',
         'title',
         'description',
-        'period',
-        'batch',
-        'opening_date',
-        'closing_date',
-        'created_by',
+        'campaign_type',
+        'institution',
+        'location',
+        'campaign_date',
         'status'
     ];
 
@@ -51,8 +51,7 @@ class Admission extends Resource {
      */
     public function fields(Request $request) {
         return [
-            ID::make('id')
-                ->sortable()
+            ID::make('id')->sortable()
                 ->hideFromIndex()
                 ->hideFromDetail(),
 
@@ -62,36 +61,49 @@ class Admission extends Resource {
 
             Trix::make('Description')
                 ->sortable()
-                ->rules(['required']),
+                ->rules(['required', 'min:100']),
 
-            Text::make('Period')
+            BelongsTo::make('Admission', 'admission', Admission::class)
+                ->display(function ($admission) {
+                    return $admission->title;
+                })
+                ->searchable(),
+
+            BelongsTo::make('Staff', 'staff', User::class)
+                ->sortable()
+                ->searchable()
+                ->rules('required'),
+
+            Text::make('Campaign Type')
+                ->sortable()
+                ->rules(['required', 'max:255']),
+
+            Text::make('Institution')
+                ->sortable()
+                ->hideFromIndex(),
+
+            Text::make('Location')
+                ->sortable()
+                ->hideFromIndex(),
+
+            Date::make('Campaign Date')
+                ->sortable()
+                ->rules('required'),
+
+            Number::make('Potential Students Reached')
                 ->sortable(),
 
-            Text::make('Batch')
-                ->sortable()
-                ->rules(['required', 'max:255'])
-                ->creationRules('unique:admissions,batch')
-                ->updateRules('unique:admissions,batch,{{resourceId}}'),
+            Number::make('Potential Applicants')
+                ->sortable(),
 
-            Date::make('Opening Date')
-                ->sortable()
-                ->rules(['required']),
-
-            Date::make('Closing Date')
-                ->sortable()
-                ->rules(['required']),
+            Text::make('Status')
+                ->onlyOnIndex()
+                ->onlyOnDetail(),
 
             BelongsTo::make('Created By', 'user', User::class)
                 ->sortable()
                 ->hideWhenCreating()
                 ->hideWhenUpdating(),
-
-            Select::make('Status')
-                ->options([
-                    'open' => 'Open',
-                    'closed' => 'Closed'
-                ])
-                ->rules('required')
         ];
     }
 
