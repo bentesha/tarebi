@@ -54,6 +54,14 @@ class AdmissionApplication extends Resource {
                 ->hideFromIndex()
                 ->hideFromDetail(),
 
+            Number::make(__('Assessment final score'), 'screening_score')
+                ->onlyOnDetail(),
+
+            Text::make(__('Application Status'), 'status')
+                ->sortable()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
+
             BelongsTo::make('Admission', 'admission', Admission::class)
                 ->display(function ($admission) {
                     return $admission->title . ' - Batch #: ' . $admission->batch;

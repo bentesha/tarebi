@@ -16,8 +16,8 @@ class AdmissionCampaign extends Model {
     public static function boot() {
         parent::boot();
 
-        static::creating(function ($admission_campaign) {
-            $admission_campaign->created_by = auth()->user()->id;
+        static::creating(function ($model) {
+            $model->created_by = auth()->user()->id;
         });
     }
 

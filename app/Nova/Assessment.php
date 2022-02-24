@@ -4,27 +4,24 @@ namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Trix;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Admission extends Resource {
+class Assessment extends Resource {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Admission::class;
+    public static $model = \App\Models\Assessment::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'title';
+    public static $title = 'id';
 
     /**
      * The columns that should be searched.
@@ -33,14 +30,6 @@ class Admission extends Resource {
      */
     public static $search = [
         'id',
-        'title',
-        'description',
-        'period',
-        'batch',
-        'opening_date',
-        'closing_date',
-        'created_by',
-        'status'
     ];
 
     /**
@@ -51,47 +40,24 @@ class Admission extends Resource {
      */
     public function fields(Request $request) {
         return [
-            ID::make('id')
+            ID::make(__('ID'), 'id')
                 ->sortable()
-                ->hideFromIndex()
-                ->hideFromDetail(),
+                ->hideFromDetail()
+                ->hideFromIndex(),
 
-            Text::make('Title')
-                ->sortable()
-                ->rules(['required', 'max:255']),
+            BelongsTo::make('Admission Application', 'application', AdmissionApplication::class)
+                ->display(function ($application) {
+                    return $application->first_name . ' ' . $application->last_name;
+                })
+                ->searchable(),
 
-            Trix::make('Description')
-                ->sortable()
-                ->rules(['required']),
-
-            Text::make('Period')
+            Number::make(__('Education'), 'education')
+                ->rules('required')
                 ->sortable(),
 
-            Text::make('Batch')
-                ->sortable()
-                ->rules(['required', 'max:255'])
-                ->creationRules('unique:admissions,batch')
-                ->updateRules('unique:admissions,batch,{{resourceId}}'),
-
-            Date::make('Opening Date')
-                ->sortable()
-                ->rules(['required']),
-
-            Date::make('Closing Date')
-                ->sortable()
-                ->rules(['required']),
-
-            BelongsTo::make('Created By', 'user', User::class)
-                ->sortable()
-                ->hideWhenCreating()
-                ->hideWhenUpdating(),
-
-            Select::make('Status')
-                ->options([
-                    'OPEN' => 'OPEN',
-                    'CLOSED' => 'CLOSED'
-                ])
+            Number::make(__('Business Experience'), 'business_experience')
                 ->rules('required')
+                ->sortable(),
         ];
     }
 

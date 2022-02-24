@@ -5,14 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Admission extends Model {
+class Assessment extends Model {
 
     use HasFactory;
-
-    protected $casts = [
-        'opening_date' => 'date',
-        'closing_date' => 'date'
-    ];
 
     public static function boot() {
         parent::boot();
@@ -20,6 +15,10 @@ class Admission extends Model {
         static::creating(function ($model) {
             $model->created_by = auth()->user()->id;
         });
+    }
+
+    public function application() {
+        return $this->belongsTo(AdmissionApplication::class, 'admission_application_id');
     }
 
     public function user() {

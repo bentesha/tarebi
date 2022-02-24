@@ -16,8 +16,8 @@ class AdmissionApplication extends Model {
     public static function boot() {
         parent::boot();
 
-        static::creating(function ($admission_application) {
-            $admission_application->created_by = auth()->user() != null ? auth()->user()->id : 0;
+        static::creating(function ($model) {
+            $model->created_by = auth()->user() != null ? auth()->user()->id : 0;
         });
     }
 
