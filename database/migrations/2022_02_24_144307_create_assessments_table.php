@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->integer('education')->nullable();
             $table->integer('business_experience')->nullable();
             $table->float('screening_score', 3, 1)->nullable();
+            $table->text('remarks')->nullable();
             $table->bigInteger('created_by')->nullable();
             $table->timestamps();
         });
