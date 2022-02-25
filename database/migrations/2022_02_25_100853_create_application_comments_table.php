@@ -15,7 +15,6 @@ return new class extends Migration {
             $table->id();
             $table->bigInteger('admission_application_id')->nullable();
             $table->bigInteger('created_by')->nullable();
-            $table->string('stage', 100)->nullable();
             $table->text('comment')->nullable();
             $table->timestamps();
         });

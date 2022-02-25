@@ -3,6 +3,9 @@
 namespace App\Nova;
 
 use App\Nova\Actions\AssessApplication;
+use App\Nova\Actions\CommentApplication;
+use App\Nova\Actions\RejectApplication;
+use App\Nova\Actions\SelectApplication;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
@@ -372,14 +375,22 @@ class AdmissionApplication extends Resource {
     public function actions(Request $request) {
         return [
             (new AssessApplication())
-                ->confirmButtonText('Submit Assessment')
+                ->confirmButtonText('Submit Assessment'),
+            (new CommentApplication())
+                ->confirmButtonText('Post Your Comment'),
+            (new SelectApplication())
+                ->confirmText('You are about to select this application')
+                ->confirmButtonText('Yes, Select'),
+            (new RejectApplication())
+                ->confirmText('You are going to reject this application')
+                ->confirmButtonText('Yes, Reject')
         ];
     }
-
     public function authorizedToDelete(Request $request) {
         return false;
     }
 
+    /*
     public function authorizedToUpdate(Request $request) {
         if ($this->status == 'PENDING') {
             return true;
@@ -387,6 +398,7 @@ class AdmissionApplication extends Resource {
             return false;
         }
     }
+    */
 
     private function yesno() {
         return ['Ndiyo' => 'Ndiyo', 'Hapana' => 'Hapana'];

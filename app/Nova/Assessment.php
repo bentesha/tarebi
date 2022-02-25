@@ -59,6 +59,8 @@ class Assessment extends Resource {
                 ->sortable(),
 
             Number::make(__('Screening Score'), 'screening_score')
+                ->hideWhenCreating()
+                ->hideWhenUpdating()
                 ->sortable()
         ];
     }

@@ -55,18 +55,23 @@ class ApplicationComment extends Resource {
                 ->display(function ($application) {
                     return $application->first_name . ' ' . $application->last_name;
                 })
-                ->sortable(),
+                ->hideFromDetail()
+                ->hideFromIndex()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
 
             BelongsTo::make('Posted By', 'user', User::class)
                 ->display(function ($user) {
                     return $user->first_name . ' ' . $user->last_name;
                 })
-                ->sortable(),
+                ->hideFromDetail()
+                ->hideFromIndex()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
 
             Textarea::make(__('Comment'), 'comment')
-                ->sortable(),
-
-            Text::make(__('Stage'), 'stage')
+                ->showOnDetail()
+                ->showOnIndex()
                 ->sortable(),
         ];
     }
@@ -111,6 +116,7 @@ class ApplicationComment extends Resource {
         return [];
     }
 
+    /*
     public static function authorizedToCreate(Request $request) {
         return false;
     }
@@ -122,4 +128,5 @@ class ApplicationComment extends Resource {
     public function authorizeToDelete(Request $request) {
         return false;
     }
+    */
 }
