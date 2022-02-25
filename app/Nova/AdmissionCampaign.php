@@ -27,6 +27,10 @@ class AdmissionCampaign extends Resource {
      */
     public static $title = 'title';
 
+    public static function label() {
+        return __('Campaigns');
+    }
+
     /**
      * The columns that should be searched.
      *

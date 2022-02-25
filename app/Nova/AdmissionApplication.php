@@ -2,11 +2,14 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\AssessApplication;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -30,6 +33,10 @@ class AdmissionApplication extends Resource {
         return $this->first_name . ' ' . $this->last_name;
     }
 
+    public static function label() {
+        return __('Applications');
+    }
+
     /**
      * The columns that should be searched.
      *
@@ -50,12 +57,12 @@ class AdmissionApplication extends Resource {
      */
     public function fields(Request $request) {
         return [
+            HasOne::make(__('Screening Results'), 'assessment', Assessment::class)
+                ->onlyOnDetail(),
+
             ID::make(__('ID'), 'id')
                 ->hideFromIndex()
                 ->hideFromDetail(),
-
-            Number::make(__('Assessment final score'), 'screening_score')
-                ->onlyOnDetail(),
 
             Text::make(__('Application Status'), 'status')
                 ->sortable()
@@ -320,6 +327,9 @@ class AdmissionApplication extends Resource {
                 ->options($this->yesno())
                 ->rules('required')
                 ->hideFromIndex(),
+
+            HasMany::make('Comments', 'comments', ApplicationComment::class)
+                ->onlyOnDetail()
         ];
     }
 
@@ -360,7 +370,22 @@ class AdmissionApplication extends Resource {
      * @return array
      */
     public function actions(Request $request) {
-        return [];
+        return [
+            (new AssessApplication())
+                ->confirmButtonText('Submit Assessment')
+        ];
+    }
+
+    public function authorizedToDelete(Request $request) {
+        return false;
+    }
+
+    public function authorizedToUpdate(Request $request) {
+        if ($this->status == 'PENDING') {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private function yesno() {

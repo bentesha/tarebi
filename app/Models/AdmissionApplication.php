@@ -24,4 +24,12 @@ class AdmissionApplication extends Model {
     public function admission() {
         return $this->belongsTo(Admission::class);
     }
+
+    public function comments() {
+        return $this->hasMany(ApplicationComment::class);
+    }
+
+    public function assessment() {
+        return $this->hasOne(Assessment::class);
+    }
 }

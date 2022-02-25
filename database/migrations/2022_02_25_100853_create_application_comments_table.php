@@ -11,13 +11,12 @@ return new class extends Migration {
      * @return void
      */
     public function up() {
-        Schema::create('assessments', function (Blueprint $table) {
+        Schema::create('application_comments', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('admission_application_id')->nullable();
-            $table->integer('education')->nullable();
-            $table->integer('business_experience')->nullable();
-            $table->float('screening_score', 3, 1)->nullable();
             $table->bigInteger('created_by')->nullable();
+            $table->string('stage', 100)->nullable();
+            $table->text('comment')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration {
      * @return void
      */
     public function down() {
-        Schema::dropIfExists('assessments');
+        Schema::dropIfExists('application_comments');
     }
 };

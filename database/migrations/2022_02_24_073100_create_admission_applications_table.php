@@ -68,7 +68,6 @@ return new class extends Migration {
             $table->string('preferred_training_from_tarebi', 255)->nullable();
             $table->text('preferred_training_from_tarebi_other')->nullable();
             $table->enum('have_smartphone', ['Ndiyo', 'Hapana'])->nullable();
-            $table->float('screening_score', 3, 1)->nullable();
             $table->enum('is_complete', [0, 1])->default(1)->nullable();
             $table->enum('status', [
                 'PENDING',

@@ -5,16 +5,17 @@ namespace App\Nova;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Assessment extends Resource {
+class ApplicationComment extends Resource {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Assessment::class;
+    public static $model = \App\Models\ApplicationComment::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -22,6 +23,12 @@ class Assessment extends Resource {
      * @var string
      */
     public static $title = 'id';
+
+    public static $displayInNavigation = false;
+
+    public static function label() {
+        return __('Comments');
+    }
 
     /**
      * The columns that should be searched.
@@ -41,25 +48,26 @@ class Assessment extends Resource {
     public function fields(Request $request) {
         return [
             ID::make(__('ID'), 'id')
-                ->hideFromDetail()
-                ->hideFromIndex(),
+                ->hideFromIndex()
+                ->hideFromDetail(),
 
             BelongsTo::make('Admission Application', 'application', AdmissionApplication::class)
                 ->display(function ($application) {
                     return $application->first_name . ' ' . $application->last_name;
                 })
-                ->searchable(),
-
-            Number::make(__('Education'), 'education')
-                ->rules('required')
                 ->sortable(),
 
-            Number::make(__('Business Experience'), 'business_experience')
-                ->rules('required')
+            BelongsTo::make('Posted By', 'user', User::class)
+                ->display(function ($user) {
+                    return $user->first_name . ' ' . $user->last_name;
+                })
                 ->sortable(),
 
-            Number::make(__('Screening Score'), 'screening_score')
-                ->sortable()
+            Textarea::make(__('Comment'), 'comment')
+                ->sortable(),
+
+            Text::make(__('Stage'), 'stage')
+                ->sortable(),
         ];
     }
 
@@ -104,6 +112,10 @@ class Assessment extends Resource {
     }
 
     public static function authorizedToCreate(Request $request) {
+        return false;
+    }
+
+    public function authorizedToUpdate(Request $request) {
         return false;
     }
 
