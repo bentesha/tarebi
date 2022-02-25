@@ -12,6 +12,8 @@ use Laravel\Nova\Fields\ActionFields;
 class RejectApplication extends Action {
     use InteractsWithQueue, Queueable;
 
+    public $name = 'Reject';
+
     /**
      * Perform the action on the given models.
      *

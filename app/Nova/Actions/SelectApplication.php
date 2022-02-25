@@ -12,6 +12,8 @@ use Laravel\Nova\Fields\ActionFields;
 class SelectApplication extends Action {
     use InteractsWithQueue, Queueable;
 
+    public $name = 'Select';
+
     /**
      * Perform the action on the given models.
      *

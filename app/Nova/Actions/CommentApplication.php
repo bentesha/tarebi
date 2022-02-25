@@ -15,6 +15,8 @@ use Laravel\Nova\Fields\Textarea;
 class CommentApplication extends Action {
     use InteractsWithQueue, Queueable;
 
+    public $name = 'Add Comment';
+
     /**
      * Perform the action on the given models.
      *

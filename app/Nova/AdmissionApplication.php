@@ -376,16 +376,17 @@ class AdmissionApplication extends Resource {
         return [
             (new AssessApplication())
                 ->confirmButtonText('Submit Assessment'),
-            (new CommentApplication())
-                ->confirmButtonText('Post Your Comment'),
             (new SelectApplication())
                 ->confirmText('You are about to select this application')
                 ->confirmButtonText('Yes, Select'),
             (new RejectApplication())
                 ->confirmText('You are going to reject this application')
-                ->confirmButtonText('Yes, Reject')
+                ->confirmButtonText('Yes, Reject'),
+            (new CommentApplication())
+                ->confirmButtonText('Post Your Comment')
         ];
     }
+
     public function authorizedToDelete(Request $request) {
         return false;
     }

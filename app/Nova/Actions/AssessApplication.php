@@ -16,7 +16,7 @@ use Laravel\Nova\Fields\Textarea;
 class AssessApplication extends Action {
     use InteractsWithQueue, Queueable;
 
-    public $name = 'Assess Application';
+    public $name = 'Assess';
 
     /**
      * Perform the action on the given models.
