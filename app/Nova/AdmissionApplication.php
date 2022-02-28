@@ -19,6 +19,7 @@ use Illuminate\Support\Carbon;
 use Eminiarts\Tabs\Tabs;
 use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\TabsOnEdit;
+use Laravel\Nova\Panel;
 
 class AdmissionApplication extends Resource {
 
@@ -74,7 +75,7 @@ class AdmissionApplication extends Resource {
      */
     public function fields(Request $request) {
         return [
-            Tabs::make('Tabs', [
+            Tabs::make('Application', [
                 Tab::make('Application', [
                     ID::make(__('ID'), 'id')
                         ->hideFromIndex()
@@ -366,9 +367,12 @@ class AdmissionApplication extends Resource {
                 ]),
 
                 Tab::make('Screening Results', [
-                    HasOne::make(__('Screening Results'), 'assessment', Assessment::class)
-                        ->onlyOnDetail(),
+                    new Panel('Screening Results', [
+                        HasOne::make(__('Screening Results'), 'assessment', Assessment::class)
+                            ->onlyOnDetail(),
+                    ])
                 ]),
+
             ]),
 
             HasMany::make('Comments', 'comments', ApplicationComment::class)

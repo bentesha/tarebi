@@ -16,6 +16,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider {
     public function boot() {
         parent::boot();
         Nova::style('custom-fields-css', public_path('css/custom.css'));
+        Nova::style('tarebi-theme', public_path('css/tarebi-theme.css'));
     }
 
     /**
