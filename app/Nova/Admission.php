@@ -5,10 +5,12 @@ namespace App\Nova;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
+use Nikans\TextLinked\TextLinked;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Admission extends Resource {
@@ -43,6 +45,14 @@ class Admission extends Resource {
         'status'
     ];
 
+    public static function createButtonLabel() {
+        return __('New Admission');
+    }
+
+    public static function updateButtonLabel() {
+        return __('Save');
+    }
+
     /**
      * Get the fields displayed by the resource.
      *
@@ -56,7 +66,14 @@ class Admission extends Resource {
                 ->hideFromIndex()
                 ->hideFromDetail(),
 
-            Text::make('Title')
+            TextLinked::make(__('Number'), 'batch')
+                ->sortable()
+                ->link($this)
+                ->rules(['required', 'max:255'])
+                ->creationRules('unique:admissions,batch')
+                ->updateRules('unique:admissions,batch,{{resourceId}}'),
+
+            Text::make(__('Name'), 'title')
                 ->sortable()
                 ->rules(['required', 'max:255']),
 
@@ -66,12 +83,6 @@ class Admission extends Resource {
 
             Text::make('Period')
                 ->sortable(),
-
-            Text::make('Batch')
-                ->sortable()
-                ->rules(['required', 'max:255'])
-                ->creationRules('unique:admissions,batch')
-                ->updateRules('unique:admissions,batch,{{resourceId}}'),
 
             Date::make('Opening Date')
                 ->sortable()
@@ -83,13 +94,14 @@ class Admission extends Resource {
 
             BelongsTo::make('Created By', 'user', User::class)
                 ->sortable()
+                ->hideFromIndex()
                 ->hideWhenCreating()
                 ->hideWhenUpdating(),
 
             Select::make('Status')
                 ->options([
-                    'OPEN' => 'OPEN',
-                    'CLOSED' => 'CLOSED'
+                    'Open' => 'Open',
+                    'Closed' => 'Closed'
                 ])
                 ->rules('required')
         ];

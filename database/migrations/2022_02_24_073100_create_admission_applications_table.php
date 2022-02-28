@@ -70,11 +70,11 @@ return new class extends Migration {
             $table->enum('have_smartphone', ['Ndiyo', 'Hapana'])->nullable();
             $table->enum('is_complete', [0, 1])->default(1)->nullable();
             $table->enum('status', [
-                'PENDING',
-                'SCREENED',
-                'SELECTED',
-                'REJECTED'
-            ])->nullable()->default('PENDING');
+                'Pending',
+                'Screened',
+                'Selected',
+                'Rejected'
+            ])->nullable()->default('Pending');
             $table->bigInteger('created_by')->nullable();
             $table->timestamps();
         });

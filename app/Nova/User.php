@@ -32,6 +32,14 @@ class User extends Resource {
         'id', 'name', 'email',
     ];
 
+    public static function createButtonLabel() {
+        return __('New User');
+    }
+
+    public static function updateButtonLabel() {
+        return __('Save');
+    }
+
     /**
      * Get the fields displayed by the resource.
      *

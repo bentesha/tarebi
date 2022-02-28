@@ -30,6 +30,14 @@ class ApplicationComment extends Resource {
         return __('Comments');
     }
 
+    public static function createButtonLabel() {
+        return __('New Comment');
+    }
+
+    public static function updateButtonLabel() {
+        return __('Save');
+    }
+
     /**
      * The columns that should be searched.
      *
@@ -51,7 +59,7 @@ class ApplicationComment extends Resource {
                 ->hideFromIndex()
                 ->hideFromDetail(),
 
-            BelongsTo::make('Admission Application', 'application', AdmissionApplication::class)
+            BelongsTo::make('Application', 'application', AdmissionApplication::class)
                 ->display(function ($application) {
                     return $application->first_name . ' ' . $application->last_name;
                 })

@@ -32,6 +32,14 @@ class Assessment extends Resource {
         'id',
     ];
 
+    public static function createButtonLabel() {
+        return __('New Assessment');
+    }
+
+    public static function updateButtonLabel() {
+        return __('Save');
+    }
+
     /**
      * Get the fields displayed by the resource.
      *
@@ -44,9 +52,9 @@ class Assessment extends Resource {
                 ->hideFromDetail()
                 ->hideFromIndex(),
 
-            BelongsTo::make('Admission Application', 'application', AdmissionApplication::class)
-                ->display(function ($application) {
-                    return $application->first_name . ' ' . $application->last_name;
+            BelongsTo::make('Application', 'application', AdmissionApplication::class)
+                ->display(function ($obj) {
+                    return $obj->first_name . ' ' . $obj->last_name;
                 })
                 ->searchable(),
 

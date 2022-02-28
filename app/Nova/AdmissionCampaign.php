@@ -10,7 +10,9 @@ use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
+use Illuminate\Support\Carbon;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Nikans\TextLinked\TextLinked;
 
 class AdmissionCampaign extends Resource {
     /**
@@ -29,6 +31,14 @@ class AdmissionCampaign extends Resource {
 
     public static function label() {
         return __('Campaigns');
+    }
+
+    public static function createButtonLabel() {
+        return __('New Campaign');
+    }
+
+    public static function updateButtonLabel() {
+        return __('Save');
     }
 
     /**
@@ -59,7 +69,8 @@ class AdmissionCampaign extends Resource {
                 ->hideFromIndex()
                 ->hideFromDetail(),
 
-            Text::make('Title')
+            TextLinked::make(__('Name'), 'title')
+                ->link($this)
                 ->sortable()
                 ->rules(['required', 'max:255']),
 
@@ -73,13 +84,13 @@ class AdmissionCampaign extends Resource {
                 })
                 ->searchable(),
 
-            BelongsTo::make('Staff', 'staff', User::class)
+            BelongsTo::make('Designated To', 'staff', User::class)
                 ->sortable()
                 ->searchable()
                 ->rules('required'),
 
-            Text::make('Campaign Type')
-                ->sortable()
+            Text::make(__('Type'), 'campaign_type')
+                ->hideFromIndex()
                 ->rules(['required', 'max:255']),
 
             Text::make('Institution')
@@ -90,15 +101,21 @@ class AdmissionCampaign extends Resource {
                 ->sortable()
                 ->hideFromIndex(),
 
-            Date::make('Campaign Date')
-                ->sortable()
+            Text::make(__('Date'), function () {
+                return Carbon::createFromFormat('Y-m-d H:i:s', $this->campaign_date)->format('jS F, Y');
+            })->hideWhenCreating()
+                ->hideWhenUpdating(),
+
+            Date::make(__('Date'), 'campaign_date')
+                ->hideFromIndex()
+                ->hideFromDetail()
                 ->rules('required'),
 
-            Number::make('Potential Students Reached')
-                ->sortable(),
+            Number::make(__('Reach'), 'potential_students_reached')
+                ->hideFromIndex(),
 
-            Number::make('Potential Applicants')
-                ->sortable(),
+            Number::make('Potential', 'potential_applicants')
+                ->hideFromIndex(),
 
             Text::make('Status')
                 ->onlyOnIndex()
@@ -106,7 +123,13 @@ class AdmissionCampaign extends Resource {
 
             BelongsTo::make('Created By', 'user', User::class)
                 ->sortable()
+                ->hideFromIndex()
                 ->hideWhenCreating()
+                ->hideWhenUpdating(),
+
+            Text::make(__('Created On'), function () {
+                return Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('jS F, Y');
+            })->hideWhenCreating()
                 ->hideWhenUpdating(),
         ];
     }

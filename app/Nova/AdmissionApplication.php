@@ -15,6 +15,7 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
+use Illuminate\Support\Carbon;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class AdmissionApplication extends Resource {
@@ -38,6 +39,14 @@ class AdmissionApplication extends Resource {
 
     public static function label() {
         return __('Applications');
+    }
+
+    public static function createButtonLabel() {
+        return __('New Application');
+    }
+
+    public static function updateButtonLabel() {
+        return __('Save');
     }
 
     /**
@@ -67,11 +76,6 @@ class AdmissionApplication extends Resource {
                 ->hideFromIndex()
                 ->hideFromDetail(),
 
-            Text::make(__('Application Status'), 'status')
-                ->sortable()
-                ->hideWhenCreating()
-                ->hideWhenUpdating(),
-
             BelongsTo::make('Admission', 'admission', Admission::class)
                 ->display(function ($admission) {
                     return $admission->title . ' - Batch #: ' . $admission->batch;
@@ -81,6 +85,7 @@ class AdmissionApplication extends Resource {
 
             Text::make(__('Jina la kwanza'), 'first_name')
                 ->sortable()
+                ->hideFromIndex()
                 ->rules(['required', 'max:100']),
 
             Text::make(__('Jina la kati'), 'middle_name')
@@ -88,7 +93,26 @@ class AdmissionApplication extends Resource {
 
             Text::make(__('Jina la mwisho'), 'last_name')
                 ->sortable()
+                ->hideFromIndex()
                 ->rules(['required', 'max:100']),
+
+            Text::make(__('Name'), function () {
+                return $this->first_name . ' ' . $this->last_name;
+            })->sortable()
+                ->hideFromDetail()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
+
+            Text::make(__('Submitted On'), function () {
+                return Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('jS F, Y');
+            })->sortable()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
+
+            Text::make(__('Status'), 'status')
+                ->sortable()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
 
             Select::make(__('Jinsia'), 'gender')
                 ->options([

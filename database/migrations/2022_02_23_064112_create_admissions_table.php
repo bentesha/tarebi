@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->date('opening_date');
             $table->date('closing_date');
             $table->bigInteger('created_by')->nullable();
-            $table->enum('status', ['OPEN', 'CLOSED']);
+            $table->enum('status', ['Open', 'Closed']);
             $table->timestamps();
         });
     }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "87e46edabc445edb9391f8eb8823d1bb",
+    "content-hash": "79062a3bed768e435fc4c1e9ebcc1a6c",
     "packages": [
         {
             "name": "brick/math",
@@ -2555,6 +2555,51 @@
                 "source": "https://github.com/nette/utils/tree/v3.2.7"
             },
             "time": "2022-01-24T11:29:14+00:00"
+        },
+        {
+            "name": "nikans/text-linked",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nikans/nova-text-linked-field.git",
+                "reference": "fba7383810ee16a831d14ce364f865dec121fe01"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nikans/nova-text-linked-field/zipball/fba7383810ee16a831d14ce364f865dec121fe01",
+                "reference": "fba7383810ee16a831d14ce364f865dec121fe01",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Nikans\\TextLinked\\FieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Nikans\\TextLinked\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Text field with link (i.e. to this resource) on Index.",
+            "keywords": [
+                "laravel",
+                "nova"
+            ],
+            "support": {
+                "issues": "https://github.com/nikans/nova-text-linked-field/issues",
+                "source": "https://github.com/nikans/nova-text-linked-field/tree/1.0.0"
+            },
+            "time": "2021-03-20T14:18:46+00:00"
         },
         {
             "name": "nikic/php-parser",

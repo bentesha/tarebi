@@ -28,7 +28,7 @@ class AssessApplication extends Action {
     public function handle(ActionFields $fields, Collection $models) {
         foreach ($models as $model) {
             $assessment = null;
-            if ($model->status == 'PENDING') {
+            if ($model->status == 'Pending') {
                 $assessment = new Assessment();
             } else {
                 $assessment = Assessment::where('admission_application_id', $model->id)->first();
@@ -40,7 +40,7 @@ class AssessApplication extends Action {
             $assessment->screening_score = $average_score;
             $assessment->save();
 
-            $model->status = 'SCREENED';
+            $model->status = 'Screened';
             $model->save();
         }
         return Action::message('Application was successfully screened');
