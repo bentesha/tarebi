@@ -117,10 +117,6 @@ class AdmissionCampaign extends Resource {
             Number::make('Potential', 'potential_applicants')
                 ->hideFromIndex(),
 
-            Text::make('Status')
-                ->onlyOnIndex()
-                ->onlyOnDetail(),
-
             BelongsTo::make('Created By', 'user', User::class)
                 ->sortable()
                 ->hideFromIndex()

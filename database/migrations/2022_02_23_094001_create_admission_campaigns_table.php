@@ -23,7 +23,7 @@ return new class extends Migration {
             $table->date('campaign_date');
             $table->integer('potential_students_reached')->nullable();
             $table->integer('potential_applicants')->nullable();
-            $table->enum('status', ['NEW', 'EXECUTED', 'DISCARDED'])->default('NEW')->nullable();
+            $table->enum('status', ['New', 'Executed', 'Discarded'])->default('New')->nullable();
             $table->bigInteger('created_by')->nullable();
             $table->timestamps();
         });
