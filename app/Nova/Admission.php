@@ -11,6 +11,7 @@ use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
@@ -90,8 +91,12 @@ class Admission extends Resource {
                         BelongsTo::make('Program', 'program', Program::class)
                             ->rules('required'),
 
+                        Number::make(__('Number of Applications'), function () {
+                            return $this->applications->count();
+                        }),
+
                         Trix::make('Description')
-                            ->sortable()
+                            ->hideFromIndex()
                             ->rules(['required']),
 
                         Text::make('Period')
