@@ -3,36 +3,29 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Log;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use Nikans\TextLinked\TextLinked;
 
-class ApplicationComment extends Resource {
+class Program extends Resource {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\ApplicationComment::class;
+    public static $model = \App\Models\Program::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'id';
-
-    public static $displayInNavigation = false;
-
-    public static function label() {
-        return __('Comments');
-    }
+    public static $title = 'name';
 
     public static function createButtonLabel() {
-        return __('New Comment');
+        return __('New Program');
     }
 
     public static function updateButtonLabel() {
@@ -45,7 +38,7 @@ class ApplicationComment extends Resource {
      * @var array
      */
     public static $search = [
-        'id',
+        'id', 'name', 'description'
     ];
 
     /**
@@ -60,22 +53,22 @@ class ApplicationComment extends Resource {
                 ->hideFromIndex()
                 ->hideFromDetail(),
 
-            BelongsTo::make(__('Posted By'), 'postedBy', User::class)
-                ->display(function ($obj) {
-                    return $obj->name;
-                })->onlyOnIndex(),
+            TextLinked::make(__('Number'), 'number')
+                ->sortable()
+                ->link($this)
+                ->rules(['required', 'max:255'])
+                ->creationRules('unique:programs,number')
+                ->updateRules('unique:programs,number,{{resourceId}}'),
 
-            Textarea::make(__('Comment'), 'comment')
+            Text::make(__('Name'), 'name')
+                ->sortable()
+                ->rules(['required', 'max:255'])
+                ->creationRules('unique:programs,name')
+                ->updateRules('unique:programs,name,{{resourceId}}'),
+
+            Textarea::make(__('Description'), 'description')
+                ->sortable()
                 ->rules('required')
-                ->sortable(),
-
-            Text::make(__('Comment'), function () {
-                return $this->comment;
-            })->onlyOnIndex(),
-
-            Text::make(__('Posted On'), function () {
-                return Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('jS M, Y g:i A');
-            })->onlyOnIndex()
         ];
     }
 
@@ -118,18 +111,4 @@ class ApplicationComment extends Resource {
     public function actions(Request $request) {
         return [];
     }
-
-    /*
-    public static function authorizedToCreate(Request $request) {
-        return false;
-    }
-
-    public function authorizedToUpdate(Request $request) {
-        return false;
-    }
-
-    public function authorizeToDelete(Request $request) {
-        return false;
-    }
-    */
 }

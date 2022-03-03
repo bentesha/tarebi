@@ -2,10 +2,14 @@
 
 namespace App\Nova;
 
+use Carbon\Carbon;
+use Eminiarts\Tabs\Tab;
+use Eminiarts\Tabs\Tabs;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Field;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
@@ -26,7 +30,7 @@ class Admission extends Resource {
      *
      * @var string
      */
-    public static $title = 'title';
+    public static $title = 'name';
 
     /**
      * The columns that should be searched.
@@ -35,7 +39,7 @@ class Admission extends Resource {
      */
     public static $search = [
         'id',
-        'title',
+        'name',
         'description',
         'period',
         'batch',
@@ -61,49 +65,78 @@ class Admission extends Resource {
      */
     public function fields(Request $request) {
         return [
-            ID::make('id')
-                ->sortable()
-                ->hideFromIndex()
-                ->hideFromDetail(),
 
-            TextLinked::make(__('Number'), 'batch')
-                ->sortable()
-                ->link($this)
-                ->rules(['required', 'max:255'])
-                ->creationRules('unique:admissions,batch')
-                ->updateRules('unique:admissions,batch,{{resourceId}}'),
 
-            Text::make(__('Name'), 'title')
-                ->sortable()
-                ->rules(['required', 'max:255']),
+            Tabs::make('Tabs', [
+                Tab::make(
+                    'Admission',
+                    [
+                        ID::make('id')
+                            ->sortable()
+                            ->hideFromIndex()
+                            ->hideFromDetail(),
 
-            Trix::make('Description')
-                ->sortable()
-                ->rules(['required']),
+                        TextLinked::make(__('Number'), 'batch')
+                            ->sortable()
+                            ->link($this)
+                            ->rules(['required', 'max:255'])
+                            ->creationRules('unique:admissions,batch')
+                            ->updateRules('unique:admissions,batch,{{resourceId}}'),
 
-            Text::make('Period')
-                ->sortable(),
+                        Text::make(__('Name'), 'name')
+                            ->sortable()
+                            ->rules(['required', 'max:255']),
 
-            Date::make('Opening Date')
-                ->sortable()
-                ->rules(['required']),
+                        BelongsTo::make('Program', 'program', Program::class)
+                            ->rules('required'),
 
-            Date::make('Closing Date')
-                ->sortable()
-                ->rules(['required']),
+                        Trix::make('Description')
+                            ->sortable()
+                            ->rules(['required']),
 
-            BelongsTo::make('Created By', 'user', User::class)
-                ->sortable()
-                ->hideFromIndex()
-                ->hideWhenCreating()
-                ->hideWhenUpdating(),
+                        Text::make('Period')
+                            ->hideFromIndex()
+                            ->sortable(),
 
-            Select::make('Status')
-                ->options([
-                    'Open' => 'Open',
-                    'Closed' => 'Closed'
+                        Date::make('Opening Date')
+                            ->sortable()
+                            ->hideFromIndex()
+                            ->rules(['required']),
+
+                        Date::make('Closing Date')
+                            ->sortable()
+                            ->hideFromIndex()
+                            ->rules(['required']),
+
+                        BelongsTo::make('Created By', 'user', User::class)
+                            ->sortable()
+                            ->hideFromIndex()
+                            ->hideWhenCreating()
+                            ->hideWhenUpdating(),
+
+                        Text::make(__('Date Created'), function () {
+                            return Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('jS F, Y g:i A');
+                        })->onlyOnDetail(),
+
+                        Select::make('Status')
+                            ->options([
+                                'Open' => 'Open',
+                                'Closed' => 'Closed'
+                            ])
+                            ->rules('required')
+                    ]
+                ),
+                Tab::make(
+                    'Applications',
+                    [
+                        HasMany::make('Applications', 'applications', AdmissionApplication::class)
+                            ->onlyOnDetail()
+                    ]
+                ),
+                Tab::make('Campaigns', [
+                    HasMany::make('Campaigns', 'campaigns', AdmissionCampaign::class)
                 ])
-                ->rules('required')
+            ])
         ];
     }
 

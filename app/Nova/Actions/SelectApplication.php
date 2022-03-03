@@ -23,7 +23,7 @@ class SelectApplication extends Action {
      */
     public function handle(ActionFields $fields, Collection $models) {
         foreach ($models as $model) {
-            $model->status = 'SELECTED';
+            $model->status = 'Selected';
             $model->save();
         }
         return Action::message('This application has been selected');

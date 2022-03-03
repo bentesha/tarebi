@@ -13,7 +13,7 @@ return new class extends Migration {
     public function up() {
         Schema::create('admission_campaigns', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 255)->nullable();
+            $table->string('name', 255)->nullable();
             $table->text('description')->nullable();
             $table->bigInteger('admission_id')->nullable();
             $table->bigInteger('staff_id')->nullable();

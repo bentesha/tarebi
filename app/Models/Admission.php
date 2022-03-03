@@ -22,7 +22,19 @@ class Admission extends Model {
         });
     }
 
+    public function applications() {
+        return $this->hasMany(AdmissionApplication::class);
+    }
+
+    public function campaigns() {
+        return $this->hasMany(AdmissionCampaign::class);
+    }
+
     public function user() {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function program() {
+        return $this->belongsTo(Program::class);
     }
 }

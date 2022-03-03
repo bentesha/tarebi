@@ -11,11 +11,10 @@ return new class extends Migration {
      * @return void
      */
     public function up() {
-        Schema::create('application_comments', function (Blueprint $table) {
+        Schema::create('programs', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('admission_application_id')->nullable();
-            $table->bigInteger('posted_by')->nullable();
-            $table->text('comment')->nullable();
+            $table->string('name', 255)->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration {
      * @return void
      */
     public function down() {
-        Schema::dropIfExists('application_comments');
+        Schema::dropIfExists('programs');
     }
 };

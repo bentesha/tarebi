@@ -13,10 +13,11 @@ return new class extends Migration {
     public function up() {
         Schema::create('admissions', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 255);
+            $table->string('name', 255);
+            $table->bigInteger('program_id')->nullable();
             $table->text('description');
             $table->string('period', 255)->nullable();
-            $table->string('batch', 255);
+            $table->string('batch', 255)->nullable();
             $table->date('opening_date');
             $table->date('closing_date');
             $table->bigInteger('created_by')->nullable();

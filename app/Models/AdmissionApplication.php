@@ -32,4 +32,8 @@ class AdmissionApplication extends Model {
     public function assessment() {
         return $this->hasOne(Assessment::class);
     }
+
+    public function user() {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

@@ -13,7 +13,7 @@ class ApplicationComment extends Model {
         parent::boot();
 
         static::creating(function ($model) {
-            $model->created_by = auth()->user()->id;
+            $model->posted_by = auth()->user()->id;
         });
     }
 
@@ -21,7 +21,7 @@ class ApplicationComment extends Model {
         return $this->belongsTo(AdmissionApplication::class, 'admission_application_id');
     }
 
-    public function user() {
-        return $this->belongsTo(User::class, 'created_by');
+    public function postedBy() {
+        return $this->belongsTo(User::class, 'posted_by');
     }
 }

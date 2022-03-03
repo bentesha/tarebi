@@ -14,6 +14,7 @@ return new class extends Migration {
         Schema::create('admission_applications', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('admission_id')->nullable();
+            $table->string('number', 100)->nullable();
             $table->string('first_name', 100)->nullable();
             $table->string('middle_name', 100)->nullable();
             $table->string('last_name', 100)->nullable();
@@ -30,6 +31,8 @@ return new class extends Migration {
             $table->string('education_other', 255)->nullable();
             $table->string('phone1', 20)->nullable();
             $table->string('phone2', 20)->nullable();
+            $table->string('email1', 255)->nullable();
+            $table->string('email2', 255)->nullable();
             $table->string('communication_subscription_method', 255)->nullable();
             $table->string('communication_subscription_method_other', 255)->nullable();
             $table->enum('previous_subscription_tarebi_services', ['Ndiyo', 'Hapana'])->nullable();
@@ -69,6 +72,7 @@ return new class extends Migration {
             $table->text('preferred_training_from_tarebi_other')->nullable();
             $table->enum('have_smartphone', ['Ndiyo', 'Hapana'])->nullable();
             $table->enum('is_complete', [0, 1])->default(1)->nullable();
+            $table->date('submitted_on')->nullable();
             $table->enum('status', [
                 'Pending',
                 'Screened',

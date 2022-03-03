@@ -23,7 +23,7 @@ class RejectApplication extends Action {
      */
     public function handle(ActionFields $fields, Collection $models) {
         foreach ($models as $model) {
-            $model->status = 'REJECTED';
+            $model->status = 'Rejected';
             $model->save();
         }
         return Action::message('This application has been rejected');

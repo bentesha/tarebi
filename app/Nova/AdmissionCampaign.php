@@ -27,7 +27,7 @@ class AdmissionCampaign extends Resource {
      *
      * @var string
      */
-    public static $title = 'title';
+    public static $title = 'name';
 
     public static function label() {
         return __('Campaigns');
@@ -48,7 +48,7 @@ class AdmissionCampaign extends Resource {
      */
     public static $search = [
         'id',
-        'title',
+        'name',
         'description',
         'campaign_type',
         'institution',
@@ -69,7 +69,7 @@ class AdmissionCampaign extends Resource {
                 ->hideFromIndex()
                 ->hideFromDetail(),
 
-            TextLinked::make(__('Name'), 'title')
+            TextLinked::make(__('Name'), 'name')
                 ->link($this)
                 ->sortable()
                 ->rules(['required', 'max:255']),
@@ -80,7 +80,7 @@ class AdmissionCampaign extends Resource {
 
             BelongsTo::make('Admission', 'admission', Admission::class)
                 ->display(function ($admission) {
-                    return $admission->title;
+                    return $admission->name;
                 })
                 ->searchable(),
 
