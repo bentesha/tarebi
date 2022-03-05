@@ -80,6 +80,7 @@ return new class extends Migration {
                 'Rejected'
             ])->nullable()->default('Pending');
             $table->bigInteger('created_by')->nullable();
+            $table->enum('locked', [0, 1])->nullable()->default(0);
             $table->timestamps();
         });
     }

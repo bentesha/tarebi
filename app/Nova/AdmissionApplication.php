@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\ApproveSelection;
 use App\Nova\Actions\AssessApplication;
 use App\Nova\Actions\CommentApplication;
 use App\Nova\Actions\RejectApplication;
@@ -20,7 +21,7 @@ use Eminiarts\Tabs\Tabs;
 use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\TabsOnEdit;
 use Laravel\Nova\Panel;
-use Nikans\TextLinked\TextLinked;
+use Nikans\TextLinked\TextLinked;;
 
 class AdmissionApplication extends Resource {
 
@@ -92,9 +93,7 @@ class AdmissionApplication extends Resource {
                     BelongsTo::make('Admission', 'admission', Admission::class)
                         ->display(function ($admission) {
                             return $admission->name . ' - Batch #: ' . $admission->batch;
-                        })
-                        ->searchable()
-                        ->sortable(),
+                        })->sortable(),
 
                     BelongsTo::make(__('Program'), 'admission', Admission::class)
                         ->display(function ($admission) {
@@ -125,7 +124,11 @@ class AdmissionApplication extends Resource {
                         })->onlyOnDetail(),
 
                     Text::make(__('Created Date'), function () {
-                        return Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('jS F, Y');
+                        if ($this->created_at != null) {
+                            return Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('jS F, Y');
+                        } else {
+                            return __('--');
+                        }
                     })->onlyOnDetail()
                 ]),
 
@@ -474,6 +477,9 @@ class AdmissionApplication extends Resource {
             (new RejectApplication())
                 ->confirmText('You are going to reject this application')
                 ->confirmButtonText('Yes, Reject'),
+            (new ApproveSelection())
+                ->confirmText('You are about to approve all selected applicants to students')
+                ->confirmButtonText('Yes, Approve'),
             (new CommentApplication())
                 ->confirmButtonText('Post Your Comment')
         ];

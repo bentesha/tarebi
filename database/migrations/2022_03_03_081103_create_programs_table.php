@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name', 255)->nullable();
             $table->text('description')->nullable();
+            $table->enum('locked', [0, 1])->nullable()->default(0);
             $table->timestamps();
         });
     }

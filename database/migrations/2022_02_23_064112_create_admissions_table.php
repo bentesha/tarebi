@@ -22,6 +22,7 @@ return new class extends Migration {
             $table->date('closing_date');
             $table->bigInteger('created_by')->nullable();
             $table->enum('status', ['Open', 'Closed']);
+            $table->enum('locked', [0, 1])->nullable()->default(0);
             $table->timestamps();
         });
     }

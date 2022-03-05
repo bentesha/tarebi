@@ -140,6 +140,7 @@ class Admission extends Resource {
                 ),
                 Tab::make('Campaigns', [
                     HasMany::make('Campaigns', 'campaigns', AdmissionCampaign::class)
+                        ->onlyOnDetail()
                 ])
             ])
         ];
