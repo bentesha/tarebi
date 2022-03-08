@@ -7,6 +7,9 @@ use App\Nova\Actions\AssessApplication;
 use App\Nova\Actions\CommentApplication;
 use App\Nova\Actions\RejectApplication;
 use App\Nova\Actions\SelectApplication;
+use App\Nova\Filters\ApplicationStatus;
+use App\Nova\Metrics\ApplicationsStatus;
+use App\Nova\Metrics\NewApplications;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
@@ -438,7 +441,10 @@ class AdmissionApplication extends Resource {
      * @return array
      */
     public function cards(Request $request) {
-        return [];
+        return [
+            new NewApplications(),
+            new ApplicationsStatus()
+        ];
     }
 
     /**
@@ -448,7 +454,9 @@ class AdmissionApplication extends Resource {
      * @return array
      */
     public function filters(Request $request) {
-        return [];
+        return [
+            new ApplicationStatus()
+        ];
     }
 
     /**

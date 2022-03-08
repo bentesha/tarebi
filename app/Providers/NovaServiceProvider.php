@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Nova\Filters\ApplicationStatus;
+use App\Nova\Metrics\ApplicationsStatus;
+use App\Nova\Metrics\NewApplications;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Cards\Help;
 use Laravel\Nova\Nova;
@@ -53,7 +56,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider {
      */
     protected function cards() {
         return [
-            new Help,
+            ApplicationsStatus::make(),
+            NewApplications::make()
         ];
     }
 
