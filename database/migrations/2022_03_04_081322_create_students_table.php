@@ -14,6 +14,7 @@ return new class extends Migration {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('admission_id')->nullable();
+            $table->bigInteger('admission_application_id')->nullable();
             $table->bigInteger('program_id')->nullable();
             $table->string('number', 100)->nullable();
             $table->string('first_name', 100)->nullable();
