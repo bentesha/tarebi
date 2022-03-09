@@ -51,7 +51,7 @@ class Admission extends Resource {
     ];
 
     public static function createButtonLabel() {
-        return __('New Admission');
+        return __('Create Admission');
     }
 
     public static function updateButtonLabel() {

@@ -198,4 +198,12 @@ class Student extends Resource {
     public function actions(Request $request) {
         return [];
     }
+
+    public static function authorizedToCreate(Request $request) {
+        return false;
+    }
+
+    public function authorizedToDelete(Request $request) {
+        return false;
+    }
 }

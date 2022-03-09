@@ -25,7 +25,7 @@ class Program extends Resource {
     public static $title = 'name';
 
     public static function createButtonLabel() {
-        return __('New Program');
+        return __('Create Program');
     }
 
     public static function updateButtonLabel() {

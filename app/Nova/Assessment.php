@@ -33,7 +33,7 @@ class Assessment extends Resource {
     ];
 
     public static function createButtonLabel() {
-        return __('New Assessment');
+        return __('Create Assessment');
     }
 
     public static function updateButtonLabel() {

@@ -53,7 +53,7 @@ class AdmissionApplication extends Resource {
     }
 
     public static function createButtonLabel() {
-        return __('New Application');
+        return __('Create Application');
     }
 
     public static function updateButtonLabel() {

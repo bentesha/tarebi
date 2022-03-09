@@ -34,7 +34,7 @@ class AdmissionCampaign extends Resource {
     }
 
     public static function createButtonLabel() {
-        return __('New Campaign');
+        return __('Create Campaign');
     }
 
     public static function updateButtonLabel() {

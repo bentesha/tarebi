@@ -33,7 +33,7 @@ class User extends Resource {
     ];
 
     public static function createButtonLabel() {
-        return __('New User');
+        return __('Create User');
     }
 
     public static function updateButtonLabel() {
