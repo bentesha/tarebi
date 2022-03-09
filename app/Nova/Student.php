@@ -13,6 +13,9 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Nikans\TextLinked\TextLinked;
 
 class Student extends Resource {
+
+    public static $group = 'Admission';
+
     /**
      * The model the resource corresponds to.
      *
@@ -201,6 +204,10 @@ class Student extends Resource {
 
     public static function authorizedToCreate(Request $request) {
         return false;
+    }
+
+    public function authorizedToUpdate(Request $request) {
+        return true;
     }
 
     public function authorizedToDelete(Request $request) {

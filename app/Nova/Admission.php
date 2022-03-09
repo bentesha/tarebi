@@ -2,13 +2,13 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\ApproveByAdmission;
 use Carbon\Carbon;
 use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\Tabs;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
@@ -16,9 +16,11 @@ use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use Nikans\TextLinked\TextLinked;
-use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Admission extends Resource {
+
+    public static $group = 'Settings';
+
     /**
      * The model the resource corresponds to.
      *
@@ -68,7 +70,7 @@ class Admission extends Resource {
         return [
 
 
-            Tabs::make('Tabs', [
+            Tabs::make('Admission Details', [
                 Tab::make(
                     'Admission',
                     [
@@ -142,7 +144,7 @@ class Admission extends Resource {
                     HasMany::make('Campaigns', 'campaigns', AdmissionCampaign::class)
                         ->onlyOnDetail()
                 ])
-            ])
+            ])->withToolbar()
         ];
     }
 
@@ -183,6 +185,14 @@ class Admission extends Resource {
      * @return array
      */
     public function actions(Request $request) {
-        return [];
+        return [
+            (new ApproveByAdmission())
+                ->confirmText('You are about to approve all selected applications')
+                ->confirmButtonText('Yes, Approve')
+                ->onlyOnDetail()
+                ->canSee(function () {
+                    return $this->resource->applications->count() > 0;
+                })
+        ];
     }
 }

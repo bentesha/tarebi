@@ -9,6 +9,9 @@ use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
 
 class User extends Resource {
+
+    public static $group = 'System';
+
     /**
      * The model the resource corresponds to.
      *

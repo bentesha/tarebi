@@ -9,6 +9,9 @@ use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Assessment extends Resource {
+
+    public static $group = 'Admission';
+
     /**
      * The model the resource corresponds to.
      *

@@ -7,10 +7,8 @@ use App\Models\Student;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
-use Illuminate\Support\Facades\DB;
 
 class ApproveSelection extends Action {
     use InteractsWithQueue, Queueable;
@@ -25,13 +23,23 @@ class ApproveSelection extends Action {
      * @return mixed
      */
     public function handle(ActionFields $fields, Collection $models) {
+
+        /* ============ pending task - updated locked status of an admission ============ */
+
         if ($models->contains('status', 'Pending') || $models->contains('status', 'Screened')) {
             return Action::danger('Approval denied, selection is not complete');
         }
 
         foreach ($models as $model) {
             $admission = Admission::where(['id' => $model->admission_id, 'locked' => '0'])->first();
-            if ($admission != null && $model->status == 'Selected' && $model->locked == 0) {
+            if ($admission == null || $model->status != 'Selected' || $model->locked == 1) {
+                return Action::danger('Nothing to process, admission is locked');
+            }
+        }
+
+        foreach ($models as $model) {
+            $admission = Admission::where(['id' => $model->admission_id, 'locked' => '0'])->first();
+            if ($admission != null && $model->locked == '0') {
                 $student = new Student();
                 $student->admission_id = $model->admission_id;
                 $student->admission_application_id = $model->id;
@@ -58,17 +66,10 @@ class ApproveSelection extends Action {
                 if ($student->save()) {
                     $model->locked = '1';
                     $model->save();
-
-                    $admission->locked = '1';
-                    $admission->save();
-                    return Action::message('Selections approved');
-                } else {
-                    return Action::danger('An error has occured');
                 }
-            } else {
-                return Action::danger('Nothing to process, admission is locked');
             }
         }
+        return Action::message('Selection approval completed successfully');
     }
 
     /**

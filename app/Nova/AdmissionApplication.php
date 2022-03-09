@@ -2,9 +2,7 @@
 
 namespace App\Nova;
 
-use App\Nova\Actions\ApproveSelection;
 use App\Nova\Actions\AssessApplication;
-use App\Nova\Actions\CommentApplication;
 use App\Nova\Actions\RejectApplication;
 use App\Nova\Actions\SelectApplication;
 use App\Nova\Filters\ApplicationStatus;
@@ -31,6 +29,8 @@ use Nikans\TextLinked\TextLinked;;
 class AdmissionApplication extends Resource {
 
     use TabsOnEdit;
+
+    public static $group = 'Admission';
 
     /**
      * The model the resource corresponds to.
@@ -82,7 +82,7 @@ class AdmissionApplication extends Resource {
      */
     public function fields(Request $request) {
         return [
-            Tabs::make('Application', [
+            Tabs::make('Application Details', [
                 Tab::make('General', [
                     ID::make(__('ID'), 'id')
                         ->hideFromIndex()
@@ -429,7 +429,7 @@ class AdmissionApplication extends Resource {
                     ])
                 ]),
 
-            ]),
+            ])->withToolbar(),
 
             Commenter::make(),
             HasMany::make('Comments', 'comments', Comment::class)->hideFromDetail()->hideFromIndex()
@@ -480,18 +480,16 @@ class AdmissionApplication extends Resource {
     public function actions(Request $request) {
         return [
             (new AssessApplication())
-                ->confirmButtonText('Submit Assessment'),
+                ->confirmButtonText('Submit Assessment')
+                ->onlyOnDetail(),
             (new SelectApplication())
                 ->confirmText('You are about to select this application')
-                ->confirmButtonText('Yes, Select'),
+                ->confirmButtonText('Yes, Select')
+                ->onlyOnDetail(),
             (new RejectApplication())
                 ->confirmText('You are going to reject this application')
-                ->confirmButtonText('Yes, Reject'),
-            (new ApproveSelection())
-                ->confirmText('You are about to approve all selected applicants to students')
-                ->confirmButtonText('Yes, Approve'),
-            (new CommentApplication())
-                ->confirmButtonText('Post Your Comment')
+                ->confirmButtonText('Yes, Reject')
+                ->onlyOnDetail()
         ];
     }
 
@@ -499,15 +497,13 @@ class AdmissionApplication extends Resource {
         return false;
     }
 
-    /*
     public function authorizedToUpdate(Request $request) {
-        if ($this->status == 'PENDING') {
+        if ($this->locked == '0') {
             return true;
-        } else {
+        } elseif ($this->locked == '1') {
             return false;
         }
     }
-    */
 
     private function yesno() {
         return ['Ndiyo' => 'Ndiyo', 'Hapana' => 'Hapana'];

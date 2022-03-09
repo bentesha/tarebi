@@ -10,6 +10,9 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Nikans\TextLinked\TextLinked;
 
 class Program extends Resource {
+
+    public static $group = 'Settings';
+
     /**
      * The model the resource corresponds to.
      *
