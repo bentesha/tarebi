@@ -16,13 +16,15 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Eminiarts\Tabs\Tabs;
 use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\TabsOnEdit;
+use KirschbaumDevelopment\NovaComments\Commenter;
+use KirschbaumDevelopment\NovaComments\Nova\Comment;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Panel;
 use Nikans\TextLinked\TextLinked;;
 
@@ -429,8 +431,8 @@ class AdmissionApplication extends Resource {
 
             ]),
 
-            HasMany::make('Comments', 'comments', ApplicationComment::class)
-                ->onlyOnDetail()
+            Commenter::make(),
+            HasMany::make('Comments', 'comments', Comment::class)->hideFromDetail()->hideFromIndex()
         ];
     }
 

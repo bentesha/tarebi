@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use KirschbaumDevelopment\NovaComments\Commentable;
+use KirschbaumDevelopment\NovaComments\Models\Comment;
 
 class AdmissionApplication extends Model {
 
-    use HasFactory;
+    use HasFactory, Commentable;
 
     protected $casts = [
         'date_of_birth' => 'date'
@@ -25,8 +27,14 @@ class AdmissionApplication extends Model {
         return $this->belongsTo(Admission::class);
     }
 
+    /*
     public function comments() {
         return $this->hasMany(ApplicationComment::class);
+    }
+    */
+
+    public function comments() {
+        return $this->hasMany(Comment::class, 'commentable_id');
     }
 
     public function assessment() {
