@@ -114,17 +114,16 @@ class AdmissionApplication extends Resource {
                         })
                         ->onlyOnDetail(),
 
-                    Date::make(__('Submitted Date'), 'submitted_on')
-                        ->sortable()
-                        ->onlyOnForms(),
-
                     Text::make(__('Submitted Date'), function () {
                         if ($this->submitted_on != null) {
-                            return Carbon::createFromFormat('Y-m-d', $this->submitted_on)->format('jS F, Y');
+                            return Carbon::parse($this->submitted_on)->format('jS F, Y');
                         } else {
                             return __('--');
                         }
                     })->onlyOnDetail(),
+
+                    Date::make(__('Submitted Date'), 'submitted_on')
+                        ->onlyOnForms(),
 
                     Text::make(__('Status'), 'status')
                         ->sortable()

@@ -12,7 +12,8 @@ class AdmissionApplication extends Model {
     use HasFactory, Commentable;
 
     protected $casts = [
-        'date_of_birth' => 'date'
+        'date_of_birth' => 'date',
+        'submitted_on' => 'date'
     ];
 
     public static function boot() {
