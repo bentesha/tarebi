@@ -483,12 +483,10 @@ class AdmissionApplication extends Resource {
                 ->onlyOnDetail(),
             (new SelectApplication())
                 ->confirmText('You are about to select this application')
-                ->confirmButtonText('Yes, Select')
-                ->onlyOnDetail(),
+                ->confirmButtonText('Yes, Select'),
             (new RejectApplication())
                 ->confirmText('You are going to reject this application')
                 ->confirmButtonText('Yes, Reject')
-                ->onlyOnDetail()
         ];
     }
 
