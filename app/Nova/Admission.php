@@ -190,9 +190,6 @@ class Admission extends Resource {
                 ->confirmText('You are about to approve all selected applications')
                 ->confirmButtonText('Yes, Approve')
                 ->onlyOnDetail()
-                ->canSee(function () {
-                    return $this->resource->applications->count() > 0;
-                })
         ];
     }
 }
