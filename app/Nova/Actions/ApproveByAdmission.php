@@ -24,8 +24,15 @@ class ApproveByAdmission extends Action {
      */
     public function handle(ActionFields $fields, Collection $models) {
         foreach ($models as $model) {
+            $applications = AdmissionApplication::where(['admission_id' => $model->id, 'locked' => '0'])->get();
+            if ($applications->contains('status', 'Pending')) {
+                return Action::danger('This admission can not be approved, screening is in progress');
+            }
+        }
+
+        foreach ($models as $model) {
             if ($model->locked == '0') {
-                $applications = AdmissionApplication::where(['admission_id' => $model->id, 'locked' => '0'])->get();
+                $applications = AdmissionApplication::where(['admission_id' => $model->id, 'status' => 'Selected', 'locked' => '0'])->get();
                 foreach ($applications as $application) {
                     $student = new Student();
                     $student->admission_id = $application->admission_id;
