@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Nova\Filters\ApplicationStatus;
+use App\Nova\Metrics\Applications;
 use App\Nova\Metrics\ApplicationsStatus;
 use App\Nova\Metrics\NewApplications;
 use Illuminate\Support\Facades\Gate;
@@ -57,7 +58,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider {
     protected function cards() {
         return [
             ApplicationsStatus::make(),
-            NewApplications::make()
+            NewApplications::make(),
+            Applications::make()
         ];
     }
 

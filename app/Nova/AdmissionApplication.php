@@ -6,6 +6,7 @@ use App\Nova\Actions\AssessApplication;
 use App\Nova\Actions\RejectApplication;
 use App\Nova\Actions\SelectApplication;
 use App\Nova\Filters\ApplicationStatus;
+use App\Nova\Metrics\Applications;
 use App\Nova\Metrics\ApplicationsStatus;
 use App\Nova\Metrics\NewApplications;
 use Carbon\Carbon;
@@ -444,7 +445,8 @@ class AdmissionApplication extends Resource {
     public function cards(Request $request) {
         return [
             new NewApplications(),
-            new ApplicationsStatus()
+            new ApplicationsStatus(),
+            new Applications()
         ];
     }
 
