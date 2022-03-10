@@ -72,6 +72,7 @@ class Program extends Resource {
             Textarea::make(__('Description'), 'description')
                 ->sortable()
                 ->rules('required')
+                ->rows(2)
         ];
     }
 
