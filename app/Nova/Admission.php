@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Nova\Actions\ApproveByAdmission;
+use App\Nova\Filters\AdmissionStatus;
 use Carbon\Carbon;
 use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\Tabs;
@@ -165,7 +166,9 @@ class Admission extends Resource {
      * @return array
      */
     public function filters(Request $request) {
-        return [];
+        return [
+            new AdmissionStatus()
+        ];
     }
 
     /**
