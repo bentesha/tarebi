@@ -19,7 +19,7 @@ use Nikans\TextLinked\TextLinked;
 
 class Admission extends Resource {
 
-    public static $group = 'Settings';
+    public static $group = 'Onboarding';
 
     /**
      * The model the resource corresponds to.

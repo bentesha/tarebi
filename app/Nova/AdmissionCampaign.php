@@ -16,7 +16,7 @@ use Nikans\TextLinked\TextLinked;
 
 class AdmissionCampaign extends Resource {
 
-    public static $group = 'Admission';
+    public static $group = 'Onboarding';
 
     /**
      * The model the resource corresponds to.

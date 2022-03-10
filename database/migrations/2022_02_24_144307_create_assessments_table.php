@@ -14,7 +14,11 @@ return new class extends Migration {
         Schema::create('assessments', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('admission_application_id')->nullable();
-            $table->integer('education')->nullable();
+            $table->integer('age_range')->nullable();
+            $table->integer('business_idea')->nullable();
+            $table->integer('solar_related_business')->nullable();
+            $table->integer('knowledgeable_about_solar_installations')->nullable();
+            $table->integer('graduated_from_technical_training')->nullable();
             $table->integer('business_experience')->nullable();
             $table->float('screening_score', 3, 1)->nullable();
             $table->text('remarks')->nullable();

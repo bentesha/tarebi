@@ -30,7 +30,7 @@ class AdmissionApplication extends Resource {
 
     use TabsOnEdit;
 
-    public static $group = 'Admission';
+    public static $group = 'Onboarding';
 
     /**
      * The model the resource corresponds to.
@@ -95,6 +95,13 @@ class AdmissionApplication extends Resource {
                         ->creationRules('unique:programs,number')
                         ->updateRules('unique:programs,number,{{resourceId}}'),
 
+                    Text::make(__('Name'), function () {
+                        return $this->first_name . ' ' . $this->last_name;
+                    })->sortable()
+                        ->hideFromDetail()
+                        ->hideWhenCreating()
+                        ->hideWhenUpdating(),
+
                     BelongsTo::make('Admission', 'admission', Admission::class)
                         ->display(function ($admission) {
                             return $admission->name . ' - Batch #: ' . $admission->batch;
@@ -150,14 +157,6 @@ class AdmissionApplication extends Resource {
                         ->sortable()
                         ->hideFromIndex()
                         ->rules(['required', 'max:100']),
-
-                    Text::make(__('Name'), function () {
-                        return $this->first_name . ' ' . $this->last_name;
-                    })->sortable()
-                        ->hideFromDetail()
-                        ->hideWhenCreating()
-                        ->hideWhenUpdating(),
-
 
                     Select::make(__('Jinsia'), 'gender')
                         ->options([

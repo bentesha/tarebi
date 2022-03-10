@@ -10,7 +10,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Assessment extends Resource {
 
-    public static $group = 'Admission';
+    public static $group = 'Onboarding';
 
     /**
      * The model the resource corresponds to.
@@ -58,10 +58,25 @@ class Assessment extends Resource {
             BelongsTo::make('Application', 'application', AdmissionApplication::class)
                 ->display(function ($obj) {
                     return $obj->first_name . ' ' . $obj->last_name;
-                })
-                ->searchable(),
+                })->sortable(),
 
-            Number::make(__('Education'), 'education')
+            Number::make(__('Age'), 'age_range')
+                ->rules('required')
+                ->sortable(),
+
+            Number::make(__('Business Idea'), 'business_idea')
+                ->rules('required')
+                ->sortable(),
+
+            Number::make(__('Solar Related Business'), 'solar_related_business')
+                ->rules('required')
+                ->sortable(),
+
+            Number::make(__('Knowledgeable About Solar Installations'), 'knowledgeable_about_solar_installations')
+                ->rules('required')
+                ->sortable(),
+
+            Number::make(__('Graduated From Technical Training'), 'graduated_from_technical_training')
                 ->rules('required')
                 ->sortable(),
 

@@ -33,11 +33,14 @@ class AssessApplication extends Action {
             } else {
                 $assessment = Assessment::where('admission_application_id', $model->id)->first();
             }
-            $average_score = ($fields->education + $fields->business_experience) / 2;
             $assessment->admission_application_id = $model->id;
-            $assessment->education = $fields->education;
+            $assessment->age_range = $fields->age_range;
+            $assessment->business_idea = $fields->business_idea;
+            $assessment->solar_related_business = $fields->solar_related_business;
+            $assessment->knowledgeable_about_solar_installations = $fields->knowledgeable_about_solar_installations;
+            $assessment->graduated_from_technical_training = $fields->graduated_from_technical_training;
             $assessment->business_experience = $fields->business_experience;
-            $assessment->screening_score = $average_score;
+            $assessment->screening_score = collect($fields)->avg();
             $assessment->save();
 
             $model->status = 'Screened';
@@ -53,10 +56,29 @@ class AssessApplication extends Action {
      */
     public function fields() {
         return [
-            Number::make(__('Education'), 'education')
-                ->rules('required'),
+            Number::make(__('Age'), 'age_range')
+                ->rules('required')
+                ->sortable(),
+
+            Number::make(__('Business Idea'), 'business_idea')
+                ->rules('required')
+                ->sortable(),
+
+            Number::make(__('Solar Related Business'), 'solar_related_business')
+                ->rules('required')
+                ->sortable(),
+
+            Number::make(__('Knowledgeable About Solar Installations'), 'knowledgeable_about_solar_installations')
+                ->rules('required')
+                ->sortable(),
+
+            Number::make(__('Graduated From Technical Training'), 'graduated_from_technical_training')
+                ->rules('required')
+                ->sortable(),
+
             Number::make(__('Business Experience'), 'business_experience')
                 ->rules('required')
+                ->sortable()
         ];
     }
 }
