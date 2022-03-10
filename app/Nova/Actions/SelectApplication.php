@@ -23,6 +23,9 @@ class SelectApplication extends Action {
      */
     public function handle(ActionFields $fields, Collection $models) {
         foreach ($models as $model) {
+            if ($model->status == 'Pending') {
+                return Action::danger('Operation failed! Screening must be completed first');
+            }
             $model->status = 'Selected';
             $model->save();
         }
