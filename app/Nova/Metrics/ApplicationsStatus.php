@@ -8,7 +8,7 @@ use Laravel\Nova\Metrics\Partition;
 
 class ApplicationsStatus extends Partition {
 
-    public $name = 'Status';
+    public $name = 'By Status';
 
     /**
      * Calculate the value of the metric.
