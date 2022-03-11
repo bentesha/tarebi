@@ -28,6 +28,10 @@ class ApproveByAdmission extends Action {
             if ($applications->contains('status', 'Pending')) {
                 return Action::danger('This admission can not be approved, screening is in progress');
             }
+
+            if ($model->locked == '1') {
+                return Action::danger('Admission is locked');
+            }
         }
 
         foreach ($models as $model) {
