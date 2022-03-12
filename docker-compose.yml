@@ -15,6 +15,16 @@ services:
     ports:
       - '8000:8000'
     environment:
+      - APP_NAME=TAREBI
+      - APP_ENV=local
+      - APP_KEY=base64:WNJnVK0LM+ixw8yjF8Fig7PLjF8+vU5u4V8equL0z5E=
+      - APP_DEBUG=true
+      - APP_URL=http://tarebi.test
+
+      - LOG_CHANNEL=stack
+      - LOG_DEPRECATIONS_CHANNEL=null
+      - LOG_LEVEL=debug
+
       - DB_HOST=mariadb
       - DB_PORT=3306
       - DB_USERNAME=tarebi
