@@ -36,6 +36,7 @@ return new class extends Migration {
             $table->string('email1', 255)->nullable();
             $table->string('email2', 255)->nullable();
             $table->enum('status', ['Selected', 'Enrolled'])->nullable()->default('Selected');
+            $table->bigInteger('class_id')->nullable();
             $table->bigInteger('created_by')->nullable();
             $table->timestamps();
         });
