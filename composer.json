@@ -38,7 +38,8 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": []
     },
     "autoload-dev": {
         "psr-4": {
@@ -78,10 +79,6 @@
             "url": "./nova"
         },
         "0": {
-            "type": "path",
-            "url": "./nova-components/Comments"
-        },
-        "1": {
             "type": "path",
             "url": "./nova-components/Comments"
         }
