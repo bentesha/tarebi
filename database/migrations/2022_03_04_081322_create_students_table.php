@@ -35,7 +35,10 @@ return new class extends Migration {
             $table->string('phone2', 20)->nullable();
             $table->string('email1', 255)->nullable();
             $table->string('email2', 255)->nullable();
-            $table->enum('status', ['Selected', 'Enrolled'])->nullable()->default('Selected');
+            $table->enum('status', [
+                'Selected', 'Enrolled', 'Terminated'
+            ])->nullable()->default('Selected');
+            $table->dateTime('terminated_on')->nullable();
             $table->bigInteger('class_id')->nullable();
             $table->bigInteger('created_by')->nullable();
             $table->timestamps();
