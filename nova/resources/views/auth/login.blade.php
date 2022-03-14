@@ -2,27 +2,21 @@
 
 @section('content')
 
-@include('nova::auth.partials.header')
-
-<form
-    class="bg-white shadow rounded-lg p-8 max-w-login mx-auto"
-    method="POST"
-    action="{{ route('nova.login') }}"
->
+<form class="bg-white shadow rounded-lg p-8 max-w-login mx-auto" method="POST" action="{{ route('nova.login') }}">
     {{ csrf_field() }}
 
-    @component('nova::auth.partials.heading')
-        {{ __('Welcome Back!') }}
-    @endcomponent
+    <div class="mx-auto px-8 pb-8 max-w-sm text-center text-90">
+        @include('nova::auth.partials.logo')
+    </div>
 
     @if ($errors->any())
     <p class="text-center font-semibold text-danger my-3">
         @if ($errors->has('email'))
-            {{ $errors->first('email') }}
+        {{ $errors->first('email') }}
         @else
-            {{ $errors->first('password') }}
+        {{ $errors->first('password') }}
         @endif
-        </p>
+    </p>
     @endif
 
     <div class="mb-6 {{ $errors->has('email') ? ' has-error' : '' }}">
