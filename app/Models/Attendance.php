@@ -12,4 +12,8 @@ class Attendance extends Model {
     protected $casts = [
         'date' => 'date'
     ];
+
+    public function attendanceClass() {
+        return $this->belongsTo(EnrollmentClass::class, 'class_id');
+    }
 }

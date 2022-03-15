@@ -28,12 +28,6 @@ class AdmissionApplication extends Model {
         return $this->belongsTo(Admission::class);
     }
 
-    /*
-    public function comments() {
-        return $this->hasMany(ApplicationComment::class);
-    }
-    */
-
     public function comments() {
         return $this->hasMany(Comment::class, 'commentable_id');
     }

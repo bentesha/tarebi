@@ -17,6 +17,8 @@ class StudentAttendance extends Resource {
      */
     public static $model = \App\Models\StudentAttendance::class;
 
+    public static $displayInNavigation = false;
+
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
@@ -32,6 +34,14 @@ class StudentAttendance extends Resource {
     public static $search = [
         'id',
     ];
+
+    public static function label() {
+        return __('Student Attendances');
+    }
+
+    public static function updateButtonLabel() {
+        return __('Save');
+    }
 
     /**
      * Get the fields displayed by the resource.

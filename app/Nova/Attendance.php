@@ -2,9 +2,12 @@
 
 namespace App\Nova;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Fields\Text;
 
 class Attendance extends Resource {
 
@@ -22,7 +25,7 @@ class Attendance extends Resource {
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'name';
 
     /**
      * The columns that should be searched.
@@ -33,6 +36,14 @@ class Attendance extends Resource {
         'id',
     ];
 
+    public static function label() {
+        return __('Attendances');
+    }
+
+    public static function updateButtonLabel() {
+        return __('Save');
+    }
+
     /**
      * Get the fields displayed by the resource.
      *
@@ -41,7 +52,33 @@ class Attendance extends Resource {
      */
     public function fields(Request $request) {
         return [
-            ID::make(__('ID'), 'id')->sortable(),
+            ID::make(__('ID'), 'id')
+                ->hideFromIndex()
+                ->hideFromDetail()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
+
+            Text::make(__('Name'), 'name')
+                ->rules('required'),
+
+            Date::make(__('Date'), 'date')
+                ->rules('required')
+                ->onlyOnForms(),
+
+            Text::make(__('Date'), function () {
+                if ($this->date != null) {
+                    return Carbon::parse($this->date)->format('jS F, Y');
+                } else {
+                    return __('--');
+                }
+            })->hideWhenCreating()
+                ->hideWhenUpdating(),
+
+            BelongsTo::make(__('Class'), 'attendanceClass', EnrollmentClass::class)
+                ->display(function ($class) {
+                    return $class->name . ' # ' . $class->number;
+                })
+                ->rules('required')
         ];
     }
 
@@ -83,5 +120,17 @@ class Attendance extends Resource {
      */
     public function actions(Request $request) {
         return [];
+    }
+
+    public static function authorizedToCreate(Request $request) {
+        return false;
+    }
+
+    public function authorizedToUpdate(Request $request) {
+        return false;
+    }
+
+    public function authorizedToDelete(Request $request) {
+        return false;
     }
 }
