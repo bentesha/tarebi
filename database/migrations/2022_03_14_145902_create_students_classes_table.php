@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->bigInteger('class_id')->nullable();
             $table->date('joined_on')->nullable();
             $table->date('end_date')->nullable();
-            $table->enum('status', ['Open', 'Closed'])->nullable();
+            $table->enum('status', ['Open', 'Closed'])->nullable()->default('Open');
             $table->timestamps();
         });
     }
