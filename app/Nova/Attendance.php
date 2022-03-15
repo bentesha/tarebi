@@ -5,9 +5,11 @@ namespace App\Nova;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
+use Nikans\TextLinked\TextLinked;
 
 class Attendance extends Resource {
 
@@ -58,7 +60,8 @@ class Attendance extends Resource {
                 ->hideWhenCreating()
                 ->hideWhenUpdating(),
 
-            Text::make(__('Name'), 'name')
+            TextLinked::make(__('Name'), 'name')
+                ->link($this)
                 ->rules('required'),
 
             Date::make(__('Date'), 'date')
@@ -78,7 +81,10 @@ class Attendance extends Resource {
                 ->display(function ($class) {
                     return $class->name . ' # ' . $class->number;
                 })
-                ->rules('required')
+                ->rules('required'),
+
+            BelongsToMany::make(__('Students'), 'students', StudentAttendance::class)
+                ->onlyOnDetail()
         ];
     }
 
@@ -123,10 +129,6 @@ class Attendance extends Resource {
     }
 
     public static function authorizedToCreate(Request $request) {
-        return false;
-    }
-
-    public function authorizedToUpdate(Request $request) {
         return false;
     }
 

@@ -225,10 +225,6 @@ class Student extends Resource {
         return false;
     }
 
-    public function authorizedToUpdate(Request $request) {
-        return true;
-    }
-
     public function authorizedToDelete(Request $request) {
         return false;
     }

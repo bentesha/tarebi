@@ -18,4 +18,8 @@ class StudentAttendance extends Model {
             $model->created_by = auth()->user()->id;
         });
     }
+
+    public function student() {
+        return $this->belongsTo(Student::class);
+    }
 }

@@ -2,8 +2,13 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\AttendanceRegister;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Badge;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class StudentAttendance extends Resource {
@@ -51,7 +56,23 @@ class StudentAttendance extends Resource {
      */
     public function fields(Request $request) {
         return [
-            ID::make(__('ID'), 'id')->sortable(),
+            ID::make(__('ID'), 'id')
+                ->hideFromDetail()
+                ->hideFromIndex()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
+
+            Text::make(__('Name'), function () {
+                return $this->first_name . ' ' . $this->last_name;
+            }),
+
+            Badge::make(__('Attendance'), 'attendance')
+                ->map([
+                    'Present' => 'success',
+                    'Absent' => 'danger',
+                    'Other' => 'warning',
+                    '' => 'info'
+                ])->onlyOnIndex()
         ];
     }
 
@@ -92,6 +113,8 @@ class StudentAttendance extends Resource {
      * @return array
      */
     public function actions(Request $request) {
-        return [];
+        return [
+            new AttendanceRegister()
+        ];
     }
 }
