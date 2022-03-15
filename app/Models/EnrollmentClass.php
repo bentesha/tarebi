@@ -28,8 +28,4 @@ class EnrollmentClass extends Model {
     public function admission() {
         return $this->belongsTo(Admission::class);
     }
-
-    public function setAdmissionProgram() {
-        return $this->admission->program->name;
-    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\StudentAttendance;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
@@ -151,6 +152,11 @@ class EnrollmentClass extends Resource {
      * @return array
      */
     public function actions(Request $request) {
-        return [];
+        return [
+            (new StudentAttendance())
+                ->confirmText('You are about to create attendance for this class')
+                ->confirmButtonText('Yes, Create Attendance')
+                ->onlyOnDetail()
+        ];
     }
 }
