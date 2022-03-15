@@ -23,6 +23,7 @@ use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\TabsOnEdit;
 use KirschbaumDevelopment\NovaComments\Commenter;
 use KirschbaumDevelopment\NovaComments\Nova\Comment;
+use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Panel;
 use Nikans\TextLinked\TextLinked;;
@@ -125,8 +126,13 @@ class AdmissionApplication extends Resource {
                     Date::make(__('Submitted Date'), 'submitted_on')
                         ->onlyOnForms(),
 
-                    Text::make(__('Status'), 'status')
-                        ->sortable()
+                    Badge::make(__('Status'), 'status')
+                        ->map([
+                            'Pending' => 'warning',
+                            'Screened' => 'info',
+                            'Selected' => 'success',
+                            'Rejected' => 'danger'
+                        ])
                         ->hideWhenCreating()
                         ->hideWhenUpdating(),
 

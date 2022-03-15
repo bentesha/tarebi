@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\Tabs;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\HasMany;
@@ -126,12 +127,12 @@ class Admission extends Resource {
                             return Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('jS F, Y g:i A');
                         })->onlyOnDetail(),
 
-                        Select::make('Status')
-                            ->options([
-                                'Open' => 'Open',
-                                'Closed' => 'Closed'
-                            ])
-                            ->rules('required')
+                        Badge::make(__('Status'), 'status')
+                            ->map([
+                                'Open' => 'success',
+                                'Closed' => 'danger'
+                            ])->hideWhenCreating()
+                            ->hideWhenUpdating()
                     ]
                 ),
                 Tab::make(

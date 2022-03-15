@@ -2,14 +2,16 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\EnrollStudents;
+use App\Nova\Actions\TerminateStudents;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Http\Requests\NovaRequest;
 use Nikans\TextLinked\TextLinked;
 
 class Student extends Resource {
@@ -146,10 +148,20 @@ class Student extends Resource {
             Text::make(__('Barua Pepe 2'), 'email2')
                 ->hideFromIndex(),
 
-            Text::make(__('Status'), 'status')
-                ->sortable()
+            Badge::make(__('Status'), 'status')
+                ->map([
+                    'Selected' => 'warning',
+                    'Enrolled' => 'success',
+                    'Terminated' => 'danger'
+                ])
                 ->hideWhenCreating()
                 ->hideWhenUpdating(),
+
+            Text::make(__('Terminated On'), function () {
+                if ($this->terminated_on != null) {
+                    return Carbon::createFromFormat('Y-m-d H:i:s', $this->terminated_on)->format('jS F, Y g:i A');
+                }
+            })->onlyOnDetail(),
 
             BelongsTo::make(__('Created By'), 'user', User::class)
                 ->display(function ($user) {
@@ -199,7 +211,14 @@ class Student extends Resource {
      * @return array
      */
     public function actions(Request $request) {
-        return [];
+        return [
+            (new TerminateStudents())
+                ->confirmText('You are about to terminate this student from enrollment')
+                ->confirmButtonText('Yes, Terminate'),
+            (new EnrollStudents())
+                ->confirmText('You are about to make enrollment to selected student(s)')
+                ->confirmButtonText('Yes, Enroll')
+        ];
     }
 
     public static function authorizedToCreate(Request $request) {
