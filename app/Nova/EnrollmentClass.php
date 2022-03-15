@@ -6,6 +6,7 @@ use App\Nova\Actions\StudentAttendance;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
@@ -111,7 +112,10 @@ class EnrollmentClass extends Resource {
                 ->hideWhenUpdating(),
 
             Textarea::make(__('Description'), 'description')
-                ->hideFromIndex()
+                ->hideFromIndex(),
+
+            BelongsToMany::make(__('Students'), 'students', Student::class)
+                ->onlyOnDetail()
         ];
     }
 

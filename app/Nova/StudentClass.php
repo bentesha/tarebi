@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -51,7 +52,11 @@ class StudentClass extends Resource {
      */
     public function fields(Request $request) {
         return [
-            ID::make(__('ID'), 'id')->sortable(),
+            ID::make(__('ID'), 'id')
+                ->hideFromDetail()
+                ->hideFromIndex()
+                ->hideWhenCreating()
+                ->hideWhenUpdating()
         ];
     }
 

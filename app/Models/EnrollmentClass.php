@@ -28,4 +28,8 @@ class EnrollmentClass extends Model {
     public function admission() {
         return $this->belongsTo(Admission::class);
     }
+
+    public function students() {
+        return $this->belongsToMany(Student::class, 'students_classes', 'class_id');
+    }
 }
