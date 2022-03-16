@@ -40,7 +40,7 @@ class AttendanceRegister extends Action {
                     'Present' => 'Present',
                     'Absent' => 'Absent',
                     'Other' => 'Other'
-                ])
+                ])->rules('required')
         ];
     }
 }
