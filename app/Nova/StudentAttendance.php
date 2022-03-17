@@ -5,11 +5,8 @@ namespace App\Nova;
 use App\Nova\Actions\AttendanceRegister;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Badge;
-use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Http\Requests\NovaRequest;
 
 class StudentAttendance extends Resource {
 
@@ -113,8 +110,6 @@ class StudentAttendance extends Resource {
      * @return array
      */
     public function actions(Request $request) {
-        return [
-            new AttendanceRegister()
-        ];
+        return [];
     }
 }

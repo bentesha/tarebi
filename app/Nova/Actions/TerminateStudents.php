@@ -28,6 +28,7 @@ class TerminateStudents extends Action {
         foreach ($models as $model) {
             if ($model->status != 'Terminated') {
                 $model->status = 'Terminated';
+                $model->class_id = null;
                 $model->terminated_on = Carbon::now();
                 $model->save();
             }

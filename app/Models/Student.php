@@ -22,7 +22,11 @@ class Student extends Model {
     }
 
     public function attendances() {
-        return $this->hasMany(Attendance::class, 'students_attendances');
+        return $this->belongsToMany(Attendance::class, 'students_attendances');
+    }
+
+    public function classes() {
+        return $this->belongsToMany(EnrollmentClass::class, 'students_classes');
     }
 
     public function admission() {

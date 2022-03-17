@@ -28,18 +28,26 @@ class EnrollStudents extends Action {
             return Action::danger('One or more selected student has already been enrolled');
         }
 
-        foreach ($models as $model) {
-            $model->status = 'Enrolled';
-            $model->terminated_on = null;
-            $model->class_id = $fields->class;
-            $model->save();
+        if ($models->contains('status', 'Terminated')) {
+            return Action::danger('One or more selected student was terminated');
+        }
 
-            $studentClass = new StudentClass();
-            $studentClass->student_id = $model->id;
-            $studentClass->class_id = $fields->class;
-            $studentClass->joined_on = $fields->joined_on;
-            $studentClass->end_date = $fields->end_date;
-            $studentClass->save();
+        foreach ($models as $model) {
+            if ($model->status == 'Terminated' || $model->status == 'Enrolled') {
+                continue;
+            } else if ($model->status == 'Selected') {
+                $model->status = 'Enrolled';
+                $model->terminated_on = null;
+                $model->class_id = $fields->class;
+                $model->save();
+
+                $studentClass = new StudentClass();
+                $studentClass->student_id = $model->id;
+                $studentClass->class_id = $fields->class;
+                $studentClass->joined_on = $fields->joined_on;
+                $studentClass->end_date = $fields->end_date;
+                $studentClass->save();
+            }
         }
         return Action::message('Enrollment has completed successfully');
     }

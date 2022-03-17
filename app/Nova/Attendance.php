@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\StudentAttendance;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
@@ -129,10 +130,6 @@ class Attendance extends Resource {
     }
 
     public static function authorizedToCreate(Request $request) {
-        return false;
-    }
-
-    public function authorizedToDelete(Request $request) {
         return false;
     }
 }
