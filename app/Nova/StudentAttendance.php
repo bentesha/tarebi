@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Textarea;
 
 class StudentAttendance extends Resource {
 
@@ -70,7 +71,10 @@ class StudentAttendance extends Resource {
                     'Absent' => 'danger',
                     'Other' => 'warning',
                     '' => 'info'
-                ])->onlyOnIndex()
+                ])->onlyOnIndex(),
+
+            Textarea::make(__('Remarks'), 'remarks')
+                ->showOnIndex()
         ];
     }
 

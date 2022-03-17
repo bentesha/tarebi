@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Textarea;
 
 class AttendanceRegister extends Action {
     use InteractsWithQueue, Queueable;
@@ -22,6 +23,7 @@ class AttendanceRegister extends Action {
     public function handle(ActionFields $fields, Collection $models) {
         foreach ($models as $model) {
             $model->attendance = $fields->attendance;
+            $model->remarks = $fields->remarks;
             $model->save();
         }
         return Action::message('Attendance registered successfully');
@@ -39,7 +41,9 @@ class AttendanceRegister extends Action {
                     'Present' => 'Present',
                     'Absent' => 'Absent',
                     'Other' => 'Other'
-                ])->rules('required')
+                ])->rules('required'),
+
+            Textarea::make(__('Remarks'), 'remarks')
         ];
     }
 }
