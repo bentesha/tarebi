@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
@@ -114,8 +115,7 @@ class EnrollmentClass extends Resource {
             Textarea::make(__('Description'), 'description')
                 ->hideFromIndex(),
 
-            BelongsToMany::make(__('Students'), 'students', Student::class)
-                ->onlyOnDetail()
+            HasMany::make(__('Class Students'), 'studentsClasses', StudentClass::class)
         ];
     }
 

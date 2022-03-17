@@ -85,7 +85,7 @@ class Attendance extends Resource {
                 })
                 ->rules('required'),
 
-            HasMany::make(__('Attendances'), 'studentsAttendances', StudentAttendance::class)
+            HasMany::make(__('Session Attendance'), 'studentsAttendances', StudentAttendance::class)
         ];
     }
 

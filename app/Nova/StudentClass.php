@@ -2,9 +2,12 @@
 
 namespace App\Nova;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class StudentClass extends Resource {
@@ -56,7 +59,20 @@ class StudentClass extends Resource {
                 ->hideFromDetail()
                 ->hideFromIndex()
                 ->hideWhenCreating()
-                ->hideWhenUpdating()
+                ->hideWhenUpdating(),
+
+            BelongsTo::make(__('Name'), 'student', Student::class)
+                ->display(function ($student) {
+                    return $student->first_name . ' ' . $student->last_name;
+                }),
+
+            Text::make(__('Date Joined'), function () {
+                return Carbon::parse($this->joined_on)->format('jS F, Y');
+            }),
+
+            Text::make(__('End Date'), function () {
+                return Carbon::parse($this->end_date)->format('jS F, Y');
+            })
         ];
     }
 
@@ -98,5 +114,17 @@ class StudentClass extends Resource {
      */
     public function actions(Request $request) {
         return [];
+    }
+
+    public static function authorizedToCreate(Request $request) {
+        return false;
+    }
+
+    public function authorizedToUpdate(Request $request) {
+        return false;
+    }
+
+    public function authorizedToDelete(Request $request) {
+        return false;
     }
 }

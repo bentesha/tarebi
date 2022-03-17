@@ -15,4 +15,8 @@ class StudentClass extends Model {
         'joined_on' => 'date',
         'end_date' => 'date'
     ];
+
+    public function student() {
+        return $this->belongsTo(Student::class);
+    }
 }
