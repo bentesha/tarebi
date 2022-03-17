@@ -13,11 +13,16 @@ class Attendance extends Model {
         'date' => 'date'
     ];
 
-    public function attendanceClass() {
+    public function enrollmentClass() {
         return $this->belongsTo(EnrollmentClass::class, 'class_id');
     }
 
     public function students() {
-        return $this->belongsToMany(Student::class, 'students_attendances');
+        return $this->belongsToMany(Student::class, 'students_attendances')
+            ->withPivot('attendance');
+    }
+
+    public function studentsAttendances() {
+        return $this->hasMany(StudentAttendance::class);
     }
 }

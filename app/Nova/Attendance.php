@@ -2,12 +2,13 @@
 
 namespace App\Nova;
 
-use App\Nova\Actions\StudentAttendance;
+use App\Nova\Actions\AttendanceRegister;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Nikans\TextLinked\TextLinked;
@@ -78,14 +79,13 @@ class Attendance extends Resource {
             })->hideWhenCreating()
                 ->hideWhenUpdating(),
 
-            BelongsTo::make(__('Class'), 'attendanceClass', EnrollmentClass::class)
+            BelongsTo::make(__('Class'), 'enrollmentClass', EnrollmentClass::class)
                 ->display(function ($class) {
                     return $class->name . ' # ' . $class->number;
                 })
                 ->rules('required'),
 
-            BelongsToMany::make(__('Students'), 'students', StudentAttendance::class)
-                ->onlyOnDetail()
+            HasMany::make(__('Attendances'), 'studentsAttendances', StudentAttendance::class)
         ];
     }
 
@@ -130,6 +130,10 @@ class Attendance extends Resource {
     }
 
     public static function authorizedToCreate(Request $request) {
+        return false;
+    }
+
+    public function authorizeToDelete(Request $request) {
         return false;
     }
 }

@@ -37,7 +37,6 @@ class EnrollStudents extends Action {
                 continue;
             } else if ($model->status == 'Selected') {
                 $model->status = 'Enrolled';
-                $model->terminated_on = null;
                 $model->class_id = $fields->class;
                 $model->save();
 

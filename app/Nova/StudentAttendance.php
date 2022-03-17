@@ -5,8 +5,8 @@ namespace App\Nova;
 use App\Nova\Actions\AttendanceRegister;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Badge;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Text;
 
 class StudentAttendance extends Resource {
 
@@ -59,9 +59,10 @@ class StudentAttendance extends Resource {
                 ->hideWhenCreating()
                 ->hideWhenUpdating(),
 
-            Text::make(__('Name'), function () {
-                return $this->first_name . ' ' . $this->last_name;
-            }),
+            BelongsTo::make(__('Name'), 'student', Student::class)
+                ->display(function ($student) {
+                    return $student->first_name . ' ' . $student->last_name;
+                }),
 
             Badge::make(__('Attendance'), 'attendance')
                 ->map([
@@ -110,6 +111,21 @@ class StudentAttendance extends Resource {
      * @return array
      */
     public function actions(Request $request) {
-        return [];
+        return [
+            (new AttendanceRegister())
+                ->confirmButtonText('Save')
+        ];
+    }
+
+    public static function authorizedToCreate(Request $request) {
+        return false;
+    }
+
+    public function authorizeToUpdate(Request $request) {
+        return false;
+    }
+
+    public function authorizeToDelete(Request $request) {
+        return false;
     }
 }
