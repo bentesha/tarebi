@@ -13,6 +13,8 @@ use Laravel\Nova\Fields\Textarea;
 class AttendanceRegister extends Action {
     use InteractsWithQueue, Queueable;
 
+    public $name = 'Record Attendance';
+
     /**
      * Perform the action on the given models.
      *

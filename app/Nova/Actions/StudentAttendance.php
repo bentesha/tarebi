@@ -17,6 +17,8 @@ use Laravel\Nova\Fields\Text;
 class StudentAttendance extends Action {
     use InteractsWithQueue, Queueable;
 
+    public $name = 'New Attendance';
+
     /**
      * Perform the action on the given models.
      *
