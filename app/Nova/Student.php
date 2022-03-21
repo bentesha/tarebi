@@ -16,7 +16,7 @@ use Nikans\TextLinked\TextLinked;
 
 class Student extends Resource {
 
-    public static $group = 'Onboarding';
+    public static $group = 'Enrollment';
 
     /**
      * The model the resource corresponds to.
