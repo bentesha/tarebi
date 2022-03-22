@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\SendSMS;
 use App\Nova\Actions\StudentAttendance;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -160,7 +161,10 @@ class EnrollmentClass extends Resource {
             (new StudentAttendance())
                 ->confirmText('You are about to create attendance for this class')
                 ->confirmButtonText('Yes, Create Attendance')
-                ->onlyOnDetail()
+                ->onlyOnDetail(),
+            (new SendSMS())
+                ->confirmText('You are about to send messages to this/these class(es)')
+                ->confirmButtonText('Yes, Send Message(s)')
         ];
     }
 }

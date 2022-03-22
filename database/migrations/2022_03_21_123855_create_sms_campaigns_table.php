@@ -15,7 +15,8 @@ return new class extends Migration {
             $table->id();
             $table->bigInteger('class_id')->nullable();
             $table->bigInteger('sms_template_id')->nullable();
-            $table->string('message', 255)->nullable();
+            $table->text('message')->nullable();
+            $table->bigInteger('created_by')->nullable();
             $table->timestamps();
         });
     }

@@ -3,7 +3,9 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Textarea;
 
 class SmsCampaign extends Resource {
 
@@ -44,7 +46,23 @@ class SmsCampaign extends Resource {
      */
     public function fields(Request $request) {
         return [
-            ID::make(__('ID'), 'id')->hide(),
+            ID::make(__('ID'), 'id')
+                ->hide(),
+
+            BelongsTo::make(__('Class'), 'enrollmentClass', EnrollmentClass::class)
+                ->display(function ($obj) {
+                    return $obj->name . ' # ' . $obj->number;
+                })->sortable()
+                ->rules('required'),
+
+            BelongsTo::make(__('SMS Template'), 'smsTemplate', SmsTemplate::class)
+                ->display(function ($obj) {
+                    return $obj->subject;
+                })->sortable()
+                ->rules('required'),
+
+            Textarea::make(__('Message'), 'message')
+                ->rules('required')
         ];
     }
 
