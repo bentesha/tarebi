@@ -429,7 +429,7 @@ class AdmissionApplication extends Resource {
 
                 Tab::make('Screening Results', [
                     new Panel('Screening Results', [
-                        HasOne::make(__('Screening Results'), 'assessment', Assessment::class)
+                        HasOne::make(__('Screening Results'), 'assessment', ApplicationAssessment::class)
                             ->onlyOnDetail(),
                     ])
                 ]),

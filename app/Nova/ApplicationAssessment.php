@@ -6,9 +6,8 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Assessment extends Resource {
+class ApplicationAssessment extends Resource {
 
     public static $group = 'Onboarding';
 
@@ -17,7 +16,7 @@ class Assessment extends Resource {
      *
      * @var string
      */
-    public static $model = \App\Models\Assessment::class;
+    public static $model = \App\Models\ApplicationAssessment::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -34,6 +33,10 @@ class Assessment extends Resource {
     public static $search = [
         'id',
     ];
+
+    public static function label() {
+        return __('Assessments');
+    }
 
     public static function createButtonLabel() {
         return __('Create Assessment');

@@ -2,7 +2,7 @@
 
 use App\Nova\Admission;
 use App\Nova\AdmissionApplication;
-use App\Nova\Assessment;
+use App\Nova\ApplicationAssessment;
 use App\Nova\Attendance;
 use App\Nova\EnrollmentClass;
 use Illuminate\Http\Request;
@@ -27,7 +27,7 @@ class ResourceManager extends Tool {
             'Onboarding' => collect([
                 Admission::class,
                 AdmissionApplication::class,
-                Assessment::class,
+                ApplicationAssessment::class,
             ]),
             'Enrollment' => collect([
                 Attendance::class,

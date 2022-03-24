@@ -33,7 +33,7 @@ class AdmissionApplication extends Model {
     }
 
     public function assessment() {
-        return $this->hasOne(Assessment::class);
+        return $this->hasOne(ApplicationAssessment::class);
     }
 
     public function user() {

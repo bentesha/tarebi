@@ -2,7 +2,7 @@
 
 namespace App\Nova\Actions;
 
-use App\Models\Assessment;
+use App\Models\ApplicationAssessment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
@@ -26,9 +26,9 @@ class AssessApplication extends Action {
         foreach ($models as $model) {
             $assessment = null;
             if ($model->status == 'Pending') {
-                $assessment = new Assessment();
+                $assessment = new ApplicationAssessment();
             } else {
-                $assessment = Assessment::where('admission_application_id', $model->id)->first();
+                $assessment = ApplicationAssessment::where('admission_application_id', $model->id)->first();
             }
             $assessment->admission_application_id = $model->id;
             $assessment->age_range = $fields->age_range;
