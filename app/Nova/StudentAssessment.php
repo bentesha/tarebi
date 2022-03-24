@@ -4,7 +4,9 @@ namespace App\Nova;
 
 use App\Nova\Actions\AssessStudent;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\KeyValue;
 
 class StudentAssessment extends Resource {
 
@@ -47,7 +49,16 @@ class StudentAssessment extends Resource {
      */
     public function fields(Request $request) {
         return [
-            ID::make(__('ID'), 'id')->sortable(),
+            ID::make(__('ID'), 'id')
+                ->hide(),
+
+            BelongsTo::make(__('Name'), 'student', Student::class)
+                ->display(function ($obj) {
+                    return $obj->first_name . ' ' . $obj->last_name;
+                }),
+
+            KeyValue::make(__('Assessments'), 'assessment')
+                ->rules('json')
         ];
     }
 

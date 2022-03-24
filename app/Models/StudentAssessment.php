@@ -9,6 +9,10 @@ class StudentAssessment extends Model {
 
     use HasFactory;
 
+    protected $casts = [
+        'assessment' => 'json',
+    ];
+
     public static function boot() {
         parent::boot();
 
