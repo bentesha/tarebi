@@ -35,4 +35,8 @@ class EnrollmentClass extends Model {
     public function studentsClasses() {
         return $this->hasMany(StudentClass::class, 'class_id');
     }
+
+    public function assessments() {
+        return $this->hasMany(ClassAssessment::class, 'class_id');
+    }
 }

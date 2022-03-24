@@ -2,12 +2,14 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\CreateClassAssessment;
 use App\Nova\Actions\SendSMS;
 use App\Nova\Actions\StudentAttendance;
 use Carbon\Carbon;
+use Eminiarts\Tabs\Tab;
+use Eminiarts\Tabs\Tabs;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
@@ -60,63 +62,74 @@ class EnrollmentClass extends Resource {
     public function fields(Request $request) {
         return [
             ID::make(__('ID'), 'id')
-                ->hideFromIndex()
-                ->hideFromDetail()
-                ->hideWhenCreating()
-                ->hideWhenUpdating(),
+                ->hide(),
 
-            TextLinked::make(__('Number'), 'number')
-                ->sortable()
-                ->link($this)
-                ->rules(['required', 'max:255'])
-                ->creationRules('unique:classes,number')
-                ->updateRules('unique:classes,number,{{resourceId}}'),
+            Tabs::make(__('Class Details'), [
+                Tab::make(
+                    __('Class'),
+                    [
+                        TextLinked::make(__('Number'), 'number')
+                            ->sortable()
+                            ->link($this)
+                            ->rules(['required', 'max:255'])
+                            ->creationRules('unique:classes,number')
+                            ->updateRules('unique:classes,number,{{resourceId}}'),
 
-            Select::make(__('Name'), 'name')
-                ->options([
-                    'Pre-Incubation' => 'Pre-Incubation',
-                    'Incubation' => 'Incubation',
-                    'Post-Incubation' => 'Post-Incubation'
-                ])->rules('required'),
+                        Select::make(__('Name'), 'name')
+                            ->options([
+                                'Pre-Incubation' => 'Pre-Incubation',
+                                'Incubation' => 'Incubation',
+                                'Post-Incubation' => 'Post-Incubation'
+                            ])->rules('required'),
 
-            BelongsTo::make(__('Admission'), 'admission', Admission::class)
-                ->rules('required'),
+                        BelongsTo::make(__('Admission'), 'admission', Admission::class)
+                            ->rules('required'),
 
-            Text::make(__('Program'), function () {
-                return $this->admission->program->name;
-            })->hideWhenCreating()
-                ->hideWhenUpdating(),
+                        Text::make(__('Program'), function () {
+                            return $this->admission->program->name;
+                        })->hideWhenCreating()
+                            ->hideWhenUpdating(),
 
-            Date::make(__('Starting On'), 'start_date')
-                ->rules('required')
-                ->onlyOnForms(),
+                        Date::make(__('Starting On'), 'start_date')
+                            ->rules('required')
+                            ->onlyOnForms(),
 
-            Text::make(__('Starting On'), function () {
-                if ($this->start_date != null) {
-                    return Carbon::createFromFormat('Y-m-d H:i:s', $this->start_date)->format('jS F, Y');
-                } else {
-                    return __('--');
-                }
-            })->hideWhenCreating()
-                ->hideWhenUpdating(),
+                        Text::make(__('Starting On'), function () {
+                            if ($this->start_date != null) {
+                                return Carbon::createFromFormat('Y-m-d H:i:s', $this->start_date)->format('jS F, Y');
+                            } else {
+                                return __('--');
+                            }
+                        })->hideWhenCreating()
+                            ->hideWhenUpdating(),
 
-            Date::make(__('Final Day'), 'end_date')
-                ->rules('required')
-                ->onlyOnForms(),
+                        Date::make(__('Final Day'), 'end_date')
+                            ->rules('required')
+                            ->onlyOnForms(),
 
-            Text::make(__('Final Day'), function () {
-                if ($this->end_date != null) {
-                    return Carbon::createFromFormat('Y-m-d H:i:s', $this->end_date)->format('jS F, Y');
-                } else {
-                    return __('--');
-                }
-            })->hideWhenCreating()
-                ->hideWhenUpdating(),
+                        Text::make(__('Final Day'), function () {
+                            if ($this->end_date != null) {
+                                return Carbon::createFromFormat('Y-m-d H:i:s', $this->end_date)->format('jS F, Y');
+                            } else {
+                                return __('--');
+                            }
+                        })->hideWhenCreating()
+                            ->hideWhenUpdating(),
 
-            Textarea::make(__('Description'), 'description')
-                ->hideFromIndex(),
-
-            HasMany::make(__('Class Students'), 'studentsClasses', StudentClass::class)
+                        Textarea::make(__('Description'), 'description')
+                            ->hideFromIndex(),
+                    ]
+                ),
+                Tab::make(
+                    __('Students'),
+                    [
+                        HasMany::make(__('Class Students'), 'studentsClasses', StudentClass::class)
+                    ]
+                ),
+                Tab::make(__('Assessments'), [
+                    HasMany::make(__('Assessments'), 'assessments', ClassAssessment::class)
+                ])
+            ])->withToolbar()
         ];
     }
 
@@ -164,7 +177,9 @@ class EnrollmentClass extends Resource {
                 ->onlyOnDetail(),
             (new SendSMS())
                 ->confirmText('You are about to send messages to this/these class(es)')
-                ->confirmButtonText('Yes, Send Message(s)')
+                ->confirmButtonText('Yes, Send Message(s)'),
+            (new CreateClassAssessment())
+                ->confirmButtonText('Save')
         ];
     }
 }
