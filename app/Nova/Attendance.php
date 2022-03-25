@@ -57,10 +57,7 @@ class Attendance extends Resource {
     public function fields(Request $request) {
         return [
             ID::make(__('ID'), 'id')
-                ->hideFromIndex()
-                ->hideFromDetail()
-                ->hideWhenCreating()
-                ->hideWhenUpdating(),
+                ->hide(),
 
             TextLinked::make(__('Name'), 'name')
                 ->link($this)

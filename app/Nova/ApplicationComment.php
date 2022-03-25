@@ -57,8 +57,7 @@ class ApplicationComment extends Resource {
     public function fields(Request $request) {
         return [
             ID::make(__('ID'), 'id')
-                ->hideFromIndex()
-                ->hideFromDetail(),
+                ->hide(),
 
             BelongsTo::make(__('Posted By'), 'postedBy', User::class)
                 ->display(function ($obj) {

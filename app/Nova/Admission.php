@@ -70,17 +70,13 @@ class Admission extends Resource {
      */
     public function fields(Request $request) {
         return [
-
+            ID::make('id')
+                ->hide(),
 
             Tabs::make('Admission Details', [
                 Tab::make(
                     'Admission',
                     [
-                        ID::make('id')
-                            ->sortable()
-                            ->hideFromIndex()
-                            ->hideFromDetail(),
-
                         TextLinked::make(__('Number'), 'batch')
                             ->sortable()
                             ->link($this)

@@ -69,8 +69,7 @@ class AdmissionCampaign extends Resource {
     public function fields(Request $request) {
         return [
             ID::make('id')->sortable()
-                ->hideFromIndex()
-                ->hideFromDetail(),
+                ->hide(),
 
             TextLinked::make(__('Name'), 'name')
                 ->link($this)

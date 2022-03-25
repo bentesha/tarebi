@@ -30,7 +30,7 @@ class Student extends Resource {
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'first_name';
 
     /**
      * The columns that should be searched.
@@ -50,7 +50,7 @@ class Student extends Resource {
     public function fields(Request $request) {
         return [
             ID::make(__('ID'), 'id')
-                ->hideFromIndex(),
+                ->hide(),
 
             TextLinked::make(__('Number'), 'number')
                 ->sortable()

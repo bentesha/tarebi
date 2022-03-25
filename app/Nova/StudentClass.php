@@ -56,10 +56,7 @@ class StudentClass extends Resource {
     public function fields(Request $request) {
         return [
             ID::make(__('ID'), 'id')
-                ->hideFromDetail()
-                ->hideFromIndex()
-                ->hideWhenCreating()
-                ->hideWhenUpdating(),
+                ->hide(),
 
             BelongsTo::make(__('Name'), 'student', Student::class)
                 ->display(function ($student) {

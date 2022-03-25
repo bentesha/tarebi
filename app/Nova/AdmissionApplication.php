@@ -84,12 +84,11 @@ class AdmissionApplication extends Resource {
      */
     public function fields(Request $request) {
         return [
+            ID::make(__('ID'), 'id')
+                ->hide(),
+
             Tabs::make('Application Details', [
                 Tab::make('General', [
-                    ID::make(__('ID'), 'id')
-                        ->hideFromIndex()
-                        ->hideFromDetail(),
-
                     TextLinked::make(__('Number'), 'number')
                         ->sortable()
                         ->link($this)

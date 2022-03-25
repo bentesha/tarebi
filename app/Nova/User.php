@@ -52,8 +52,7 @@ class User extends Resource {
     public function fields(Request $request) {
         return [
             ID::make()->sortable()
-                ->hideFromIndex()
-                ->hideFromDetail(),
+                ->hide(),
 
             Gravatar::make()->maxWidth(50),
 

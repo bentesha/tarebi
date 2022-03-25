@@ -55,8 +55,7 @@ class ApplicationAssessment extends Resource {
     public function fields(Request $request) {
         return [
             ID::make(__('ID'), 'id')
-                ->hideFromDetail()
-                ->hideFromIndex(),
+                ->hide(),
 
             BelongsTo::make('Application', 'application', AdmissionApplication::class)
                 ->display(function ($obj) {

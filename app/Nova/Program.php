@@ -52,8 +52,7 @@ class Program extends Resource {
     public function fields(Request $request) {
         return [
             ID::make(__('ID'), 'id')
-                ->hideFromIndex()
-                ->hideFromDetail(),
+                ->hide(),
 
             TextLinked::make(__('Number'), 'number')
                 ->sortable()
