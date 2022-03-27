@@ -3,12 +3,15 @@
 namespace App\Nova\Actions;
 
 use App\Models\StudentAssessment;
+use App\Models\StudentAssessmentItem;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Fields\KeyValue;
+use Laravel\Nova\Fields\Text;
+use R64\NovaFields\JSON;
 
 class AssessStudent extends Action {
     use InteractsWithQueue, Queueable;
@@ -36,8 +39,16 @@ class AssessStudent extends Action {
      * @return array
      */
     public function fields() {
+        $assessementItems = StudentAssessmentItem::get();
+        $items = [];
+        foreach ($assessementItems as $item) {
+            array_push($items, Text::make(__($item->item_value), $item->item_key)
+                ->rules('required'));
+        }
+
         return [
-            KeyValue::make(__('Assessment'), 'assessment')
+            JSON::make('Assessment', $items, 'assessment')
+                ->rules('required')
         ];
     }
 }

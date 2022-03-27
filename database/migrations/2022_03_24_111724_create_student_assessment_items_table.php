@@ -15,6 +15,9 @@ return new class extends Migration {
             $table->id();
             $table->string('item_key', 255)->nullable();
             $table->string('item_value', 255)->nullable();
+            $table->enum('criteria', [
+                'Pre-Incubation', 'Incubation', 'Post-Incubation'
+            ])->nullable();
             $table->string('contribution', 255)->nullable();
             $table->timestamps();
         });

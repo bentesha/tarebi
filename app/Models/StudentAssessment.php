@@ -10,7 +10,7 @@ class StudentAssessment extends Model {
     use HasFactory;
 
     protected $casts = [
-        'assessment' => 'json',
+        'assessment' => 'object',
     ];
 
     public static function boot() {
