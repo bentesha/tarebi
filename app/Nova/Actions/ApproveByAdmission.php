@@ -32,6 +32,10 @@ class ApproveByAdmission extends Action {
             if ($model->locked == '1') {
                 return Action::danger('Admission is locked');
             }
+
+            if ($model->status == 'Closed') {
+                return Action::danger('Admission is closed');
+            }
         }
 
         foreach ($models as $model) {
@@ -67,6 +71,7 @@ class ApproveByAdmission extends Action {
                     }
                 }
                 $model->locked = '1';
+                $model->status = 'Closed';
                 $model->save();
             }
         }

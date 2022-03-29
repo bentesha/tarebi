@@ -30,6 +30,7 @@ class AssessApplication extends Action {
             } else {
                 $assessment = ApplicationAssessment::where('admission_application_id', $model->id)->first();
             }
+            $avg_score = collect($fields)->avg();
             $assessment->admission_application_id = $model->id;
             $assessment->age_range = $fields->age_range;
             $assessment->business_idea = $fields->business_idea;
@@ -37,10 +38,11 @@ class AssessApplication extends Action {
             $assessment->knowledgeable_about_solar_installations = $fields->knowledgeable_about_solar_installations;
             $assessment->graduated_from_technical_training = $fields->graduated_from_technical_training;
             $assessment->business_experience = $fields->business_experience;
-            $assessment->screening_score = collect($fields)->avg();
+            $assessment->screening_score = $avg_score;
             $assessment->save();
 
             $model->status = 'Screened';
+            $model->score = $avg_score;
             $model->save();
         }
         return Action::message('Application was successfully screened');

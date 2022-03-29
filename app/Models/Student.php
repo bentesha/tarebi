@@ -29,6 +29,10 @@ class Student extends Model {
         return $this->belongsToMany(EnrollmentClass::class, 'students_classes');
     }
 
+    public function studentClass() {
+        return $this->belongsTo(EnrollmentClass::class, 'class_id');
+    }
+
     public function admission() {
         return $this->belongsTo(Admission::class);
     }

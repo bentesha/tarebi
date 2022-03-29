@@ -13,6 +13,10 @@ class Attendance extends Model {
         'date' => 'date'
     ];
 
+    public function engagement() {
+        return $this->belongsTo(Engagement::class);
+    }
+
     public function enrollmentClass() {
         return $this->belongsTo(EnrollmentClass::class, 'class_id');
     }

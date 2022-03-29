@@ -7,11 +7,10 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use Illuminate\Support\Carbon;
-use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Fields\Textarea;
 use Nikans\TextLinked\TextLinked;
 
 class AdmissionCampaign extends Resource {
@@ -76,19 +75,27 @@ class AdmissionCampaign extends Resource {
                 ->sortable()
                 ->rules(['required', 'max:255']),
 
-            Trix::make('Description')
-                ->sortable()
-                ->rules(['required', 'min:100']),
+            Text::make(__('Date'), function () {
+                return Carbon::createFromFormat('Y-m-d H:i:s', $this->campaign_date)->format('jS F, Y');
+            })->hideWhenCreating()
+                ->hideWhenUpdating(),
+
+            Date::make(__('Date'), 'campaign_date')
+                ->hideFromIndex()
+                ->hideFromDetail()
+                ->rules('required'),
+
+            Textarea::make(__('Description'), 'description'),
 
             BelongsTo::make('Admission', 'admission', Admission::class)
                 ->display(function ($admission) {
                     return $admission->name;
-                })
-                ->searchable(),
+                })->readonly(function ($request) {
+                    return $request->isUpdateOrUpdateAttachedRequest();
+                }),
 
-            BelongsTo::make('Designated To', 'staff', User::class)
+            BelongsTo::make('Facilitator', 'staff', User::class)
                 ->sortable()
-                ->searchable()
                 ->rules('required'),
 
             Text::make(__('Type'), 'campaign_type')
@@ -99,19 +106,9 @@ class AdmissionCampaign extends Resource {
                 ->sortable()
                 ->hideFromIndex(),
 
-            Text::make('Location')
+            Text::make(__('Region'), 'location')
                 ->sortable()
                 ->hideFromIndex(),
-
-            Text::make(__('Date'), function () {
-                return Carbon::createFromFormat('Y-m-d H:i:s', $this->campaign_date)->format('jS F, Y');
-            })->hideWhenCreating()
-                ->hideWhenUpdating(),
-
-            Date::make(__('Date'), 'campaign_date')
-                ->hideFromIndex()
-                ->hideFromDetail()
-                ->rules('required'),
 
             Number::make(__('Reach'), 'potential_students_reached')
                 ->hideFromIndex(),

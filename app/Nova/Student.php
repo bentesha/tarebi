@@ -59,6 +59,13 @@ class Student extends Resource {
                 ->creationRules('unique:students,number')
                 ->updateRules('unique:students,number,{{resourceId}}'),
 
+            Text::make(__('Name'), function () {
+                return $this->first_name . ' ' . $this->last_name;
+            })->sortable()
+                ->hideFromDetail()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
+
             BelongsTo::make('Admission', 'admission', Admission::class)
                 ->display(function ($admission) {
                     return $admission->name . ' - Batch #: ' . $admission->batch;
@@ -82,13 +89,7 @@ class Student extends Resource {
                 ->hideFromIndex()
                 ->rules(['required', 'max:100']),
 
-            Text::make(__('Name'), function () {
-                return $this->first_name . ' ' . $this->last_name;
-            })->sortable()
-                ->hideFromDetail()
-                ->hideWhenCreating()
-                ->hideWhenUpdating(),
-
+            BelongsTo::make(__('Class'), 'studentClass', EnrollmentClass::class),
 
             Select::make(__('Jinsia'), 'gender')
                 ->options([

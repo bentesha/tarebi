@@ -13,6 +13,7 @@ use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 
 class StudentAttendance extends Action {
     use InteractsWithQueue, Queueable;
@@ -60,7 +61,8 @@ class StudentAttendance extends Action {
             Text::make(__('Name'), 'name')
                 ->rules('required'),
             Date::make(__('Date'), 'date')
-                ->rules('required')
+                ->rules('required'),
+            Textarea::make(__('Description'), 'description')
         ];
     }
 }

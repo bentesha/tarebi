@@ -11,12 +11,14 @@ return new class extends Migration {
      * @return void
      */
     public function up() {
-        Schema::create('attendances', function (Blueprint $table) {
+        Schema::create('engagements', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('engagement_id')->nullable();
-            $table->date('date')->nullable();
+            $table->string('name', 255)->nullable();
+            $table->enum('type', ['Training', 'Study Tour', 'Coaching'])->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->text('description')->nullable();
-            $table->bigInteger('class_id')->nullable();
+            $table->bigInteger('facilitator')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ return new class extends Migration {
      * @return void
      */
     public function down() {
-        Schema::dropIfExists('attendances');
+        Schema::dropIfExists('engagements');
     }
 };

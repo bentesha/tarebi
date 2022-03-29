@@ -11,6 +11,7 @@ use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 use Nikans\TextLinked\TextLinked;
 
 class Attendance extends Resource {
@@ -59,22 +60,24 @@ class Attendance extends Resource {
             ID::make(__('ID'), 'id')
                 ->hide(),
 
-            TextLinked::make(__('Name'), 'name')
-                ->link($this)
+            TextLinked::make(__('Date'), function () {
+                if ($this->date != null) {
+                    return Carbon::parse($this->date)->format('jS F, Y');
+                } else {
+                    return __('--');
+                }
+            })->link($this)
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
+
+            BelongsTo::make(__('Engagement'), 'engagement', Engagement::class)
                 ->rules('required'),
 
             Date::make(__('Date'), 'date')
                 ->rules('required')
                 ->onlyOnForms(),
 
-            Text::make(__('Date'), function () {
-                if ($this->date != null) {
-                    return Carbon::parse($this->date)->format('jS F, Y');
-                } else {
-                    return __('--');
-                }
-            })->hideWhenCreating()
-                ->hideWhenUpdating(),
+            Textarea::make(__('Description'), 'description'),
 
             BelongsTo::make(__('Class'), 'enrollmentClass', EnrollmentClass::class)
                 ->display(function ($class) {

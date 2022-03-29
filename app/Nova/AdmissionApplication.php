@@ -5,6 +5,7 @@ namespace App\Nova;
 use App\Nova\Actions\AssessApplication;
 use App\Nova\Actions\RejectApplication;
 use App\Nova\Actions\SelectApplication;
+use App\Nova\Filters\ApplicationsByAdmission;
 use App\Nova\Filters\ApplicationStatus;
 use App\Nova\Metrics\Applications;
 use App\Nova\Metrics\ApplicationsStatus;
@@ -26,7 +27,8 @@ use KirschbaumDevelopment\NovaComments\Nova\Comment;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Panel;
-use Nikans\TextLinked\TextLinked;;
+use Nikans\TextLinked\TextLinked;
+use OptimistDigital\MultiselectField\Multiselect;;
 
 class AdmissionApplication extends Resource {
 
@@ -148,6 +150,10 @@ class AdmissionApplication extends Resource {
                         }
                     })->onlyOnDetail()
                 ]),
+
+                Text::make(__('Score'), 'score')
+                    ->hideWhenCreating()
+                    ->hideWhenUpdating(),
 
                 Tab::make('Personal Information', [
                     Text::make(__('Jina la Kwanza'), 'first_name')
@@ -373,7 +379,7 @@ class AdmissionApplication extends Resource {
                         ->rules('required')
                         ->hideFromIndex(),
 
-                    Select::make(__('Imesajiliwa kwa Njia Gani? (Jina la Usajili wa Biashara)- Chagua Zote Zinazo Kuhusu.'), 'business_registration_type')
+                    Multiselect::make(__('Imesajiliwa kwa Njia Gani? (Jina la Usajili wa Biashara)- Chagua Zote Zinazo Kuhusu.'), 'business_registration_type')
                         ->options([
                             'Usajili wa Jina la Biashara (Brella)' => 'Usajili wa Jina la Biashara (Brella)',
                             'Leseni' => 'Leseni',
@@ -388,7 +394,6 @@ class AdmissionApplication extends Resource {
 
                     Select::make(__('Je, Upo Kwenye Mchakato wa Usajili?'), 'business_under_registration_process')
                         ->options($this->yesno())
-                        ->rules('required')
                         ->hideFromIndex(),
 
                     Number::make(__('Ni Watu Wangapi Umewaajiri Kwenye Biashara Yako?'), 'business_employees_count')
@@ -401,7 +406,6 @@ class AdmissionApplication extends Resource {
 
                     Select::make(__('Ulipokea Mafunzo Hayo Chini ya  Kiatamizi cha TAREBI?'), 'trained_by_tarebi_incubation')
                         ->options($this->yesno())
-                        ->rules('required')
                         ->hideFromIndex(),
 
                     Text::make(__('Taja Mafunzo Mengine Uliyopokea Kutoka Kwenye Taasisi Zingine'), 'other_training_from_other_institutes')
@@ -462,7 +466,8 @@ class AdmissionApplication extends Resource {
      */
     public function filters(Request $request) {
         return [
-            new ApplicationStatus()
+            new ApplicationStatus(),
+            new ApplicationsByAdmission()
         ];
     }
 

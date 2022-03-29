@@ -75,7 +75,7 @@ class EnrollmentClass extends Resource {
                             ->creationRules('unique:classes,number')
                             ->updateRules('unique:classes,number,{{resourceId}}'),
 
-                        Select::make(__('Name'), 'name')
+                        Select::make(__('Level'), 'name')
                             ->options([
                                 'Pre-Incubation' => 'Pre-Incubation',
                                 'Incubation' => 'Incubation',
@@ -90,11 +90,11 @@ class EnrollmentClass extends Resource {
                         })->hideWhenCreating()
                             ->hideWhenUpdating(),
 
-                        Date::make(__('Starting On'), 'start_date')
+                        Date::make(__('Start Date'), 'start_date')
                             ->rules('required')
                             ->onlyOnForms(),
 
-                        Text::make(__('Starting On'), function () {
+                        Text::make(__('Start Date'), function () {
                             if ($this->start_date != null) {
                                 return Carbon::createFromFormat('Y-m-d H:i:s', $this->start_date)->format('jS F, Y');
                             } else {
@@ -103,11 +103,11 @@ class EnrollmentClass extends Resource {
                         })->hideWhenCreating()
                             ->hideWhenUpdating(),
 
-                        Date::make(__('Final Day'), 'end_date')
+                        Date::make(__('End Date'), 'end_date')
                             ->rules('required')
                             ->onlyOnForms(),
 
-                        Text::make(__('Final Day'), function () {
+                        Text::make(__('End Date'), function () {
                             if ($this->end_date != null) {
                                 return Carbon::createFromFormat('Y-m-d H:i:s', $this->end_date)->format('jS F, Y');
                             } else {

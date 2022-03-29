@@ -4,30 +4,30 @@ namespace App\Nova;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 
-class SmsLog extends Resource {
+class Engagement extends Resource {
 
-    public static $group = 'Messaging';
+    public static $group = 'Enrollment';
 
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\SmsLog::class;
+    public static $model = \App\Models\Engagement::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'name';
 
     /**
      * The columns that should be searched.
@@ -39,7 +39,7 @@ class SmsLog extends Resource {
     ];
 
     public static function label() {
-        return __('Outbox');
+        return __('Engagements');
     }
 
     /**
@@ -50,37 +50,40 @@ class SmsLog extends Resource {
      */
     public function fields(Request $request) {
         return [
-            ID::make(__('ID'), 'id')
-                ->hide(),
-
-            BelongsTo::make(__('Campaign'), 'campaign', SmsCampaign::class)
-                ->sortable(),
+            ID::make(__('ID'), 'id')->hide(),
 
             Text::make(__('Name'), 'name')
-                ->sortable(),
+                ->rules('required'),
 
-            Text::make(__('Type'), 'type')
-                ->sortable(),
+            Select::make(__('Type'), 'type')
+                ->options([
+                    'Training' => 'Training',
+                    'Study Tour' => 'Study Tour',
+                    'Coaching' => 'Coaching'
+                ])->rules('required'),
 
-            Textarea::make(__('Message'), 'message'),
+            Date::make(__('Starting On'), 'start_date')
+                ->onlyOnForms()
+                ->rules('required'),
 
-            Number::make(__('Characters'), 'characters')
-                ->sortable(),
-
-            Number::make(__('Length'), 'length')
-                ->sortable(),
-
-            Badge::make(__('Status'), 'status')
-                ->map([
-                    'Sent' => 'success',
-                    'Pending' => 'warning',
-                    'Failed' => 'danger'
-                ])->hideWhenCreating()
+            Text::make(__('Starting On'), function () {
+                return Carbon::parse($this->start_date)->format('jS F, Y');
+            })->hideWhenCreating()
                 ->hideWhenUpdating(),
 
-            Text::make(__('Sent On'), function () {
-                return Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('jS F, Y g:i A');
-            })
+            Date::make(__('Ending On'), 'end_date')
+                ->onlyOnForms()
+                ->rules('required'),
+
+            Text::make(__('Ending On'), function () {
+                return Carbon::parse($this->start_date)->format('jS F, Y');
+            })->hideWhenCreating()
+                ->hideWhenUpdating(),
+
+            Textarea::make(__('Description'), 'description'),
+
+            BelongsTo::make(__('Facilitator'), 'user', User::class)
+                ->rules('required')
         ];
     }
 
@@ -122,17 +125,5 @@ class SmsLog extends Resource {
      */
     public function actions(Request $request) {
         return [];
-    }
-
-    public static function authorizedToCreate(Request $request) {
-        return false;
-    }
-
-    public function authorizedToUpdate(Request $request) {
-        return false;
-    }
-
-    public function authorizedToDelete(Request $request) {
-        return false;
     }
 }

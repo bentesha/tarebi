@@ -91,7 +91,7 @@ class Admission extends Resource {
                         BelongsTo::make('Program', 'program', Program::class)
                             ->rules('required'),
 
-                        Number::make(__('Number of Applications'), function () {
+                        Number::make(__('Applications'), function () {
                             return $this->applications->count();
                         }),
 
@@ -191,5 +191,11 @@ class Admission extends Resource {
                 ->confirmButtonText('Yes, Approve')
                 ->onlyOnDetail()
         ];
+    }
+
+    public function authorizedToDelete(Request $request) {
+        if ($this->applications->count() > 0) {
+            return false;
+        }
     }
 }

@@ -2,6 +2,9 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\AttendanceMarkAbsent;
+use App\Nova\Actions\AttendanceMarkOther;
+use App\Nova\Actions\AttendanceMarkPresent;
 use App\Nova\Actions\AttendanceRegister;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Badge;
@@ -68,10 +71,7 @@ class StudentAttendance extends Resource {
                     'Absent' => 'danger',
                     'Other' => 'warning',
                     '' => 'info'
-                ])->onlyOnIndex(),
-
-            Textarea::make(__('Remarks'), 'remarks')
-                ->showOnIndex()
+                ])->onlyOnIndex()
         ];
     }
 
@@ -113,8 +113,18 @@ class StudentAttendance extends Resource {
      */
     public function actions(Request $request) {
         return [
-            (new AttendanceRegister())
+            (new AttendanceMarkPresent())
                 ->confirmButtonText('Save')
+                ->showOnTableRow()
+                ->withoutConfirmation(),
+            (new AttendanceMarkAbsent())
+                ->confirmButtonText('Save')
+                ->showOnTableRow()
+                ->withoutConfirmation(),
+            (new AttendanceMarkOther())
+                ->confirmButtonText('Save')
+                ->showOnTableRow()
+                ->withoutConfirmation()
         ];
     }
 

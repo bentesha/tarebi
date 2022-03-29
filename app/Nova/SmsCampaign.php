@@ -35,7 +35,7 @@ class SmsCampaign extends Resource {
     ];
 
     public static function label() {
-        return __('Campaigns');
+        return __('SMS Campaigns');
     }
 
     /**

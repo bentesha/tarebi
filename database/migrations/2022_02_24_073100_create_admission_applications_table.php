@@ -61,7 +61,7 @@ return new class extends Migration {
             $table->string('business_type', 255)->nullable();
             $table->enum('is_business_yours', ['Ndiyo', 'Hapana'])->nullable();
             $table->enum('is_business_registered', ['Ndiyo', 'Hapana'])->nullable();
-            $table->string('business_registration_type', 255)->nullable();
+            $table->text('business_registration_type')->nullable();
             $table->string('business_registration_type_other', 255)->nullable();
             $table->enum('business_under_registration_process', ['Ndiyo', 'Hapana'])->nullable();
             $table->integer('business_employees_count')->nullable();
@@ -79,6 +79,7 @@ return new class extends Migration {
                 'Selected',
                 'Rejected'
             ])->nullable()->default('Pending');
+            $table->float('screening_score', 3, 1)->nullable();
             $table->bigInteger('created_by')->nullable();
             $table->enum('locked', [0, 1])->nullable()->default(0);
             $table->timestamps();
