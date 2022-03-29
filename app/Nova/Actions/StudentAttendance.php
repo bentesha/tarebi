@@ -3,6 +3,7 @@
 namespace App\Nova\Actions;
 
 use App\Models\Attendance;
+use App\Models\Engagement;
 use App\Models\Student;
 use App\Models\StudentAttendance as ModelsStudentAttendance;
 use Carbon\Carbon;
@@ -11,7 +12,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 
@@ -58,7 +61,8 @@ class StudentAttendance extends Action {
      */
     public function fields() {
         return [
-            Text::make(__('Name'), 'name')
+            Select::make(__('Engagement'), 'engagement')
+                ->options(Engagement::pluck('name', 'id'))
                 ->rules('required'),
             Date::make(__('Date'), 'date')
                 ->rules('required'),

@@ -10,6 +10,7 @@ use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use Illuminate\Support\Carbon;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Textarea;
 use Nikans\TextLinked\TextLinked;
 
@@ -74,6 +75,14 @@ class AdmissionCampaign extends Resource {
                 ->link($this)
                 ->sortable()
                 ->rules(['required', 'max:255']),
+
+            Select::make(__('Type'), 'type')
+                ->options([
+                    'Online' => 'Online',
+                    'College Reachout' => 'College Reachout',
+                    'Aderts' => 'Adverts',
+                    'Other' => 'Other'
+                ]),
 
             Text::make(__('Date'), function () {
                 return Carbon::createFromFormat('Y-m-d H:i:s', $this->campaign_date)->format('jS F, Y');
