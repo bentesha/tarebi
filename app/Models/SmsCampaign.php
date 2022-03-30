@@ -25,6 +25,10 @@ class SmsCampaign extends Model {
         return $this->belongsTo(SmsTemplate::class);
     }
 
+    public function smsLogs() {
+        return $this->hasMany(SmsLog::class);
+    }
+
     public function user() {
         return $this->belongsTo(User::class, 'created_by');
     }

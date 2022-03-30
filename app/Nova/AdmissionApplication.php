@@ -220,6 +220,7 @@ class AdmissionApplication extends Resource {
 
                 Tab::make('Contacts', [
                     Text::make(__('Simu 1'), 'phone1')
+                        ->rules('required')
                         ->hideFromIndex(),
 
                     Text::make(__('Simu 2'), 'phone2')

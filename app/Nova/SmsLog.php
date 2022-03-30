@@ -53,13 +53,10 @@ class SmsLog extends Resource {
             ID::make(__('ID'), 'id')
                 ->hide(),
 
-            BelongsTo::make(__('Campaign'), 'campaign', SmsCampaign::class)
-                ->sortable(),
-
             Text::make(__('Name'), 'name')
                 ->sortable(),
 
-            Text::make(__('Type'), 'type')
+            Text::make(__('Phone'), 'msisdn')
                 ->sortable(),
 
             Textarea::make(__('Message'), 'message'),

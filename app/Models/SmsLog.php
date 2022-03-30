@@ -10,6 +10,6 @@ class SmsLog extends Model {
     use HasFactory;
 
     public function campaign() {
-        return $this->belongsTo(SmsCampaign::class);
+        return $this->belongsTo(SmsCampaign::class, 'sms_campaign_id');
     }
 }

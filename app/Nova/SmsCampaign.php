@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Textarea;
 
@@ -62,7 +63,10 @@ class SmsCampaign extends Resource {
                 ->rules('required'),
 
             Textarea::make(__('Message'), 'message')
-                ->rules('required')
+                ->rules('required'),
+
+            HasMany::make(__('Outbox'), 'smsLogs', SmsLog::class)
+                ->onlyOnDetail()
         ];
     }
 
