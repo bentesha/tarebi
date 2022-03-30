@@ -26,7 +26,8 @@
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
         "nikans/text-linked": "^1.0",
-        "optimistdigital/nova-multiselect-field": "^2.3"
+        "optimistdigital/nova-multiselect-field": "^2.3",
+        "tarebi/default": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
@@ -85,6 +86,10 @@
         "0": {
             "type": "path",
             "url": "./nova-components/Comments"
+        },
+        "1": {
+            "type": "path",
+            "url": "./nova-components/Default"
         }
     }
 }
