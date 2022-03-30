@@ -127,7 +127,9 @@ class AdmissionCampaign extends Resource {
 
             Text::make(__('Created On'), function () {
                 return Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('jS F, Y');
-            })->hide(),
+            })->hideFromIndex()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
         ];
     }
 
