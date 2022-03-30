@@ -76,13 +76,13 @@ class AdmissionCampaign extends Resource {
                 ->sortable()
                 ->rules(['required', 'max:255']),
 
-            Select::make(__('Type'), 'type')
+            Select::make(__('Type'), 'campaign_type')
                 ->options([
                     'Online' => 'Online',
                     'College Reachout' => 'College Reachout',
                     'Aderts' => 'Adverts',
                     'Other' => 'Other'
-                ]),
+                ])->rules('required'),
 
             Text::make(__('Date'), function () {
                 return Carbon::createFromFormat('Y-m-d H:i:s', $this->campaign_date)->format('jS F, Y');
@@ -106,10 +106,6 @@ class AdmissionCampaign extends Resource {
             BelongsTo::make('Facilitator', 'staff', User::class)
                 ->sortable()
                 ->rules('required'),
-
-            Text::make(__('Type'), 'campaign_type')
-                ->hideFromIndex()
-                ->rules(['required', 'max:255']),
 
             Text::make('Institution')
                 ->sortable()
