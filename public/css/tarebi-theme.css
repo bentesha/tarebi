@@ -7,19 +7,3 @@ body{
     border-radius: 2px;
 }
 
-:root {
-    --primary: #832633;
-}
-
-.bg-logo { 
-    background-color: #5f252d; 
-}
-
-.bg-logo svg { 
-    fill: white;
-}
-
-.bg-grad-sidebar { 
-    background-image: none !important;
-    background-color: #832633;
-}
