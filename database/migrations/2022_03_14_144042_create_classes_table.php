@@ -14,7 +14,8 @@ return new class extends Migration {
         Schema::create('classes', function (Blueprint $table) {
             $table->id();
             $table->string('number', 100)->nullable();
-            $table->enum('name', [
+            $table->string('name', 255)->nullable();
+            $table->enum('level', [
                 'Pre-Incubation', 'Incubation', 'Post-Incubation'
             ])->nullable();
             $table->text('description')->nullable();

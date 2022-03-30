@@ -75,7 +75,10 @@ class EnrollmentClass extends Resource {
                             ->creationRules('unique:classes,number')
                             ->updateRules('unique:classes,number,{{resourceId}}'),
 
-                        Select::make(__('Level'), 'name')
+                        Text::make(__('Name'), 'name')
+                            ->rules('required'),
+
+                        Select::make(__('Level'), 'level')
                             ->options([
                                 'Pre-Incubation' => 'Pre-Incubation',
                                 'Incubation' => 'Incubation',
