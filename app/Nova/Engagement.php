@@ -62,20 +62,20 @@ class Engagement extends Resource {
                     'Coaching' => 'Coaching'
                 ])->rules('required'),
 
-            Date::make(__('Starting On'), 'start_date')
+            Date::make(__('Start Date'), 'start_date')
                 ->onlyOnForms()
                 ->rules('required'),
 
-            Text::make(__('Starting On'), function () {
+            Text::make(__('Start Date'), function () {
                 return Carbon::parse($this->start_date)->format('jS F, Y');
             })->hideWhenCreating()
                 ->hideWhenUpdating(),
 
-            Date::make(__('Ending On'), 'end_date')
+            Date::make(__('End Date'), 'end_date')
                 ->onlyOnForms()
                 ->rules('required'),
 
-            Text::make(__('Ending On'), function () {
+            Text::make(__('End Date'), function () {
                 return Carbon::parse($this->start_date)->format('jS F, Y');
             })->hideWhenCreating()
                 ->hideWhenUpdating(),

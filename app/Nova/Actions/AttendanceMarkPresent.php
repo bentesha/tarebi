@@ -12,7 +12,7 @@ use Laravel\Nova\Fields\ActionFields;
 class AttendanceMarkPresent extends Action {
     use InteractsWithQueue, Queueable;
 
-    public $name = 'Present';
+    public $name = 'Mark Present';
 
     /**
      * Perform the action on the given models.

@@ -115,11 +115,9 @@ class AdmissionCampaign extends Resource {
                 ->sortable()
                 ->hideFromIndex(),
 
-            Number::make(__('Reach'), 'potential_students_reached')
-                ->hideFromIndex(),
+            Number::make(__('Reach'), 'potential_students_reached'),
 
-            Number::make('Potential', 'potential_applicants')
-                ->hideFromIndex(),
+            Number::make('Potential', 'potential_applicants'),
 
             BelongsTo::make('Created By', 'user', User::class)
                 ->sortable()
@@ -129,8 +127,7 @@ class AdmissionCampaign extends Resource {
 
             Text::make(__('Created On'), function () {
                 return Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('jS F, Y');
-            })->hideWhenCreating()
-                ->hideWhenUpdating(),
+            })->hide(),
         ];
     }
 

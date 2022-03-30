@@ -12,7 +12,7 @@ use Laravel\Nova\Fields\ActionFields;
 class AttendanceMarkAbsent extends Action {
     use InteractsWithQueue, Queueable;
 
-    public $name = 'Absent';
+    public $name = 'Mark Absent';
 
     /**
      * Perform the action on the given models.
