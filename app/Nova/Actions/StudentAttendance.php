@@ -37,7 +37,7 @@ class StudentAttendance extends Action {
 
         foreach ($models as $model) {
             $attendance = new Attendance();
-            $attendance->name = $fields->name;
+            $attendance->engagement_id = $fields->engagement;
             $attendance->date = $fields->date;
             $attendance->class_id = $model->id;
 
